@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ISO C Compiler 
-                                      3 ; Version 4.2.9 #13731 (Linux)
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.2.0 #13081 (MINGW64)
                                       4 ;--------------------------------------------------------
                                       5 	.module gpio
                                       6 	.optsdcc -mmcs51 --model-small
@@ -513,7 +513,7 @@
                                     513 ;--------------------------------------------------------
                                     514 	.area PSEG    (PAG,XDATA)
                                     515 ;--------------------------------------------------------
-                                    516 ; uninitialized external ram data
+                                    516 ; external ram data
                                     517 ;--------------------------------------------------------
                                     518 	.area XSEG    (XDATA)
                                     519 ;--------------------------------------------------------
@@ -521,7 +521,7 @@
                                     521 ;--------------------------------------------------------
                                     522 	.area XABS    (ABS,XDATA)
                                     523 ;--------------------------------------------------------
-                                    524 ; initialized external ram data
+                                    524 ; external initialized ram data
                                     525 ;--------------------------------------------------------
                                     526 	.area XISEG   (XDATA)
                                     527 	.area HOME    (CODE)
@@ -557,7 +557,7 @@
                                     557 ;	-----------------------------------------
                                     558 ;	 function GPIO_Init
                                     559 ;	-----------------------------------------
-      0001E4                        560 _GPIO_Init:
+      0001DA                        560 _GPIO_Init:
                            000007   561 	ar7 = 0x07
                            000006   562 	ar6 = 0x06
                            000005   563 	ar5 = 0x05
@@ -567,70 +567,70 @@
                            000001   567 	ar1 = 0x01
                            000000   568 	ar0 = 0x00
                                     569 ;	gpio.c:11: P1M1 &= ~(1 << 5);
-      0001E4 53 B3 DF         [24]  570 	anl	_P1M1,#0xdf
+      0001DA 53 B3 DF         [24]  570 	anl	_P1M1,#0xdf
                                     571 ;	gpio.c:12: P1M2 |= (1 << 5);
-      0001E7 43 B4 20         [24]  572 	orl	_P1M2,#0x20
+      0001DD 43 B4 20         [24]  572 	orl	_P1M2,#0x20
                                     573 ;	gpio.c:13: P15 = 0;
                                     574 ;	assignBit
-      0001EA C2 95            [12]  575 	clr	_P15
+      0001E0 C2 95            [12]  575 	clr	_P15
                                     576 ;	gpio.c:17: P1M1 &= ~(1 << 0);
-      0001EC 53 B3 FE         [24]  577 	anl	_P1M1,#0xfe
+      0001E2 53 B3 FE         [24]  577 	anl	_P1M1,#0xfe
                                     578 ;	gpio.c:18: P1M2 |= (1 << 0);
-      0001EF 43 B4 01         [24]  579 	orl	_P1M2,#0x01
+      0001E5 43 B4 01         [24]  579 	orl	_P1M2,#0x01
                                     580 ;	gpio.c:19: P10 = 0;
                                     581 ;	assignBit
-      0001F2 C2 90            [12]  582 	clr	_P10
+      0001E8 C2 90            [12]  582 	clr	_P10
                                     583 ;	gpio.c:23: P1M1 &= ~(1 << 1);
-      0001F4 53 B3 FD         [24]  584 	anl	_P1M1,#0xfd
+      0001EA 53 B3 FD         [24]  584 	anl	_P1M1,#0xfd
                                     585 ;	gpio.c:24: P1M2 |= (1 << 1);
-      0001F7 43 B4 02         [24]  586 	orl	_P1M2,#0x02
+      0001ED 43 B4 02         [24]  586 	orl	_P1M2,#0x02
                                     587 ;	gpio.c:25: P11 = 0;
                                     588 ;	assignBit
-      0001FA C2 91            [12]  589 	clr	_P11
+      0001F0 C2 91            [12]  589 	clr	_P11
                                     590 ;	gpio.c:30: P0M1 &= ~(1 << 0);
-      0001FC 53 B1 FE         [24]  591 	anl	_P0M1,#0xfe
+      0001F2 53 B1 FE         [24]  591 	anl	_P0M1,#0xfe
                                     592 ;	gpio.c:31: P0M2 |= ~(1 << 0);
-      0001FF 43 B2 FE         [24]  593 	orl	_P0M2,#0xfe
-                                    594 ;	gpio.c:33: P00 = 1;
+      0001F5 43 B2 FE         [24]  593 	orl	_P0M2,#0xfe
+                                    594 ;	gpio.c:33: P00 = 0;
                                     595 ;	assignBit
-      000202 D2 80            [12]  596 	setb	_P00
+      0001F8 C2 80            [12]  596 	clr	_P00
                                     597 ;	gpio.c:37: P0M1 &= ~(1 << 1);
-      000204 53 B1 FD         [24]  598 	anl	_P0M1,#0xfd
+      0001FA 53 B1 FD         [24]  598 	anl	_P0M1,#0xfd
                                     599 ;	gpio.c:38: P0M2 |= ~(1 << 1);
-      000207 43 B2 FD         [24]  600 	orl	_P0M2,#0xfd
-                                    601 ;	gpio.c:40: P01 = 1;
+      0001FD 43 B2 FD         [24]  600 	orl	_P0M2,#0xfd
+                                    601 ;	gpio.c:40: P01 = 0;
                                     602 ;	assignBit
-      00020A D2 81            [12]  603 	setb	_P01
+      000200 C2 81            [12]  603 	clr	_P01
                                     604 ;	gpio.c:44: P0M1 &= ~(1 << 2);
-      00020C 53 B1 FB         [24]  605 	anl	_P0M1,#0xfb
+      000202 53 B1 FB         [24]  605 	anl	_P0M1,#0xfb
                                     606 ;	gpio.c:45: P0M2 |= ~(1 << 2);
-      00020F 43 B2 FB         [24]  607 	orl	_P0M2,#0xfb
-                                    608 ;	gpio.c:47: P02 = 1;
+      000205 43 B2 FB         [24]  607 	orl	_P0M2,#0xfb
+                                    608 ;	gpio.c:47: P02 = 0;
                                     609 ;	assignBit
-      000212 D2 82            [12]  610 	setb	_P02
+      000208 C2 82            [12]  610 	clr	_P02
                                     611 ;	gpio.c:51: P0M1 &= ~(1 << 3);
-      000214 53 B1 F7         [24]  612 	anl	_P0M1,#0xf7
+      00020A 53 B1 F7         [24]  612 	anl	_P0M1,#0xf7
                                     613 ;	gpio.c:52: P0M2 |= ~(1 << 3);
-      000217 43 B2 F7         [24]  614 	orl	_P0M2,#0xf7
-                                    615 ;	gpio.c:54: P03 = 1;
+      00020D 43 B2 F7         [24]  614 	orl	_P0M2,#0xf7
+                                    615 ;	gpio.c:54: P03 = 0;
                                     616 ;	assignBit
-      00021A D2 83            [12]  617 	setb	_P03
+      000210 C2 83            [12]  617 	clr	_P03
                                     618 ;	gpio.c:58: P0M1 &= ~(1 << 4);
-      00021C 53 B1 EF         [24]  619 	anl	_P0M1,#0xef
+      000212 53 B1 EF         [24]  619 	anl	_P0M1,#0xef
                                     620 ;	gpio.c:59: P0M2 |= ~(1 << 4);
-      00021F 43 B2 EF         [24]  621 	orl	_P0M2,#0xef
+      000215 43 B2 EF         [24]  621 	orl	_P0M2,#0xef
                                     622 ;	gpio.c:61: P04 = 1;
                                     623 ;	assignBit
-      000222 D2 84            [12]  624 	setb	_P04
-                                    625 ;	gpio.c:65: P0M1 &= ~(1 << 5);
-      000224 53 B1 DF         [24]  626 	anl	_P0M1,#0xdf
-                                    627 ;	gpio.c:66: P0M2 |= ~(1 << 5);
-      000227 43 B2 DF         [24]  628 	orl	_P0M2,#0xdf
-                                    629 ;	gpio.c:68: P05 = 1;
+      000218 D2 84            [12]  624 	setb	_P04
+                                    625 ;	gpio.c:65: P1M1 &= ~(1 << 2);
+      00021A 53 B3 FB         [24]  626 	anl	_P1M1,#0xfb
+                                    627 ;	gpio.c:66: P1M2 |= ~(1 << 2);
+      00021D 43 B4 FB         [24]  628 	orl	_P1M2,#0xfb
+                                    629 ;	gpio.c:68: P12 = 1;
                                     630 ;	assignBit
-      00022A D2 85            [12]  631 	setb	_P05
+      000220 D2 92            [12]  631 	setb	_P12
                                     632 ;	gpio.c:69: }
-      00022C 22               [24]  633 	ret
+      000222 22               [24]  633 	ret
                                     634 	.area CSEG    (CODE)
                                     635 	.area CONST   (CODE)
                                     636 	.area XINIT   (CODE)

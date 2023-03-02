@@ -30,28 +30,28 @@ void GPIO_Init(void)
 	P0M1 &= ~(1 << 0);
 	P0M2 |= ~(1 << 0);
 	//pull high
-	P00 = 1;
+	P00 = 0;
 
 	/* IN1 - P01 */
 	/* Quasi */
 	P0M1 &= ~(1 << 1);
 	P0M2 |= ~(1 << 1);
 	//pull high
-	P01 = 1;
+	P01 = 0;
 
 	/* IN1 - P02 */
 	/* Quasi */
 	P0M1 &= ~(1 << 2);
 	P0M2 |= ~(1 << 2);
 	//pull high
-	P02 = 1;
+	P02 = 0;
 
 	/* IN1 - P03 */
 	/* Quasi */
 	P0M1 &= ~(1 << 3);
 	P0M2 |= ~(1 << 3);
 	//pull high
-	P03 = 1;
+	P03 = 0;
 
 	/* IN1 - P04 */
 	/* Quasi */
@@ -60,10 +60,10 @@ void GPIO_Init(void)
 	//pull high
 	P04 = 1;
 
-	/* Enter_button - P05 */
+	/* Enter_button - P12 */
 	/* Quasi */
-	P0M1 &= ~(1 << 5);
-	P0M2 |= ~(1 << 5);
+	P1M1 &= ~(1 << 2);
+	P1M2 |= ~(1 << 2);
 	//pull high
-	P05 = 1;
+	P12 = 1;
 }

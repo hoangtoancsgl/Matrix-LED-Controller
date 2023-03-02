@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ISO C Compiler 
-                                      3 ; Version 4.2.9 #13731 (Linux)
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.2.0 #13081 (MINGW64)
                                       4 ;--------------------------------------------------------
                                       5 	.module main
                                       6 	.optsdcc -mmcs51 --model-small
@@ -505,7 +505,7 @@
                                     505 ;--------------------------------------------------------
                                     506 ; Stack segment in internal ram
                                     507 ;--------------------------------------------------------
-                                    508 	.area SSEG
+                                    508 	.area	SSEG
       000043                        509 __start__stack:
       000043                        510 	.ds	1
                                     511 
@@ -527,7 +527,7 @@
                                     527 ;--------------------------------------------------------
                                     528 	.area PSEG    (PAG,XDATA)
                                     529 ;--------------------------------------------------------
-                                    530 ; uninitialized external ram data
+                                    530 ; external ram data
                                     531 ;--------------------------------------------------------
                                     532 	.area XSEG    (XDATA)
                                     533 ;--------------------------------------------------------
@@ -535,7 +535,7 @@
                                     535 ;--------------------------------------------------------
                                     536 	.area XABS    (ABS,XDATA)
                                     537 ;--------------------------------------------------------
-                                    538 ; initialized external ram data
+                                    538 ; external initialized ram data
                                     539 ;--------------------------------------------------------
                                     540 	.area XISEG   (XDATA)
                                     541 	.area HOME    (CODE)
@@ -575,7 +575,7 @@
                                     575 	.area HOME    (CODE)
                                     576 	.area HOME    (CODE)
       000003                        577 __sdcc_program_startup:
-      000003 02 00 DA         [24]  578 	ljmp	_main
+      000003 02 00 DD         [24]  578 	ljmp	_main
                                     579 ;	return from main will return to caller
                                     580 ;--------------------------------------------------------
                                     581 ; code
@@ -607,13 +607,13 @@
                                     607 ;	main.c:26: DelayMs(10);
       000066 90 00 0A         [24]  608 	mov	dptr,#0x000a
       000069 C0 07            [24]  609 	push	ar7
-      00006B 12 01 25         [24]  610 	lcall	_DelayMs
+      00006B 12 01 1B         [24]  610 	lcall	_DelayMs
                                     611 ;	main.c:27: RESET_OPTO = 0;
                                     612 ;	assignBit
       00006E C2 90            [12]  613 	clr	_P10
                                     614 ;	main.c:28: DelayMs(10);
       000070 90 00 0A         [24]  615 	mov	dptr,#0x000a
-      000073 12 01 25         [24]  616 	lcall	_DelayMs
+      000073 12 01 1B         [24]  616 	lcall	_DelayMs
       000076 D0 07            [24]  617 	pop	ar7
                                     618 ;	main.c:29: if(program>0)
       000078 EF               [12]  619 	mov	a,r7
@@ -641,13 +641,13 @@
       000097 C0 07            [24]  641 	push	ar7
       000099 C0 06            [24]  642 	push	ar6
       00009B C0 05            [24]  643 	push	ar5
-      00009D 12 01 25         [24]  644 	lcall	_DelayMs
+      00009D 12 01 1B         [24]  644 	lcall	_DelayMs
                                     645 ;	main.c:34: ADD_OPTO = 0;
                                     646 ;	assignBit
       0000A0 C2 90            [12]  647 	clr	_P10
                                     648 ;	main.c:35: DelayMs(200);
       0000A2 90 00 C8         [24]  649 	mov	dptr,#0x00c8
-      0000A5 12 01 25         [24]  650 	lcall	_DelayMs
+      0000A5 12 01 1B         [24]  650 	lcall	_DelayMs
       0000A8 D0 05            [24]  651 	pop	ar5
       0000AA D0 06            [24]  652 	pop	ar6
       0000AC D0 07            [24]  653 	pop	ar7
@@ -670,67 +670,59 @@
                                     670 ;	-----------------------------------------
       0000B6                        671 _check_request:
                                     672 ;	main.c:41: if(!Enter_button)
-      0000B6 20 85 20         [24]  673 	jb	_P05,00106$
+      0000B6 20 92 23         [24]  673 	jb	_P12,00106$
                                     674 ;	main.c:43: while(!Enter_button);
       0000B9                        675 00101$:
-      0000B9 30 85 FD         [24]  676 	jnb	_P05,00101$
-                                    677 ;	main.c:44: char port_value = SW_PORT;
-      0000BC AF 80            [24]  678 	mov	r7,_P0
-                                    679 ;	main.c:45: printf("Port value: %d\n", port_value);
-      0000BE 7E 00            [12]  680 	mov	r6,#0x00
-      0000C0 C0 07            [24]  681 	push	ar7
-      0000C2 C0 06            [24]  682 	push	ar6
-      0000C4 74 B9            [12]  683 	mov	a,#___str_0
-      0000C6 C0 E0            [24]  684 	push	acc
-      0000C8 74 09            [12]  685 	mov	a,#(___str_0 >> 8)
-      0000CA C0 E0            [24]  686 	push	acc
-      0000CC 74 80            [12]  687 	mov	a,#0x80
-      0000CE C0 E0            [24]  688 	push	acc
-      0000D0 12 02 55         [24]  689 	lcall	_printf
-      0000D3 E5 81            [12]  690 	mov	a,sp
-      0000D5 24 FB            [12]  691 	add	a,#0xfb
-      0000D7 F5 81            [12]  692 	mov	sp,a
-      0000D9                        693 00106$:
-                                    694 ;	main.c:47: }
-      0000D9 22               [24]  695 	ret
-                                    696 ;------------------------------------------------------------
-                                    697 ;Allocation info for local variables in function 'main'
+      0000B9 30 92 FD         [24]  676 	jnb	_P12,00101$
+                                    677 ;	main.c:44: char port_value = SW_PORT&0x1F;
+      0000BC E5 80            [12]  678 	mov	a,_P0
+      0000BE 54 1F            [12]  679 	anl	a,#0x1f
+      0000C0 FF               [12]  680 	mov	r7,a
+                                    681 ;	main.c:45: printf("Port value: %d\n", port_value);
+      0000C1 7E 00            [12]  682 	mov	r6,#0x00
+      0000C3 C0 07            [24]  683 	push	ar7
+      0000C5 C0 06            [24]  684 	push	ar6
+      0000C7 74 AF            [12]  685 	mov	a,#___str_0
+      0000C9 C0 E0            [24]  686 	push	acc
+      0000CB 74 09            [12]  687 	mov	a,#(___str_0 >> 8)
+      0000CD C0 E0            [24]  688 	push	acc
+      0000CF 74 80            [12]  689 	mov	a,#0x80
+      0000D1 C0 E0            [24]  690 	push	acc
+      0000D3 12 02 4B         [24]  691 	lcall	_printf
+      0000D6 E5 81            [12]  692 	mov	a,sp
+      0000D8 24 FB            [12]  693 	add	a,#0xfb
+      0000DA F5 81            [12]  694 	mov	sp,a
+      0000DC                        695 00106$:
+                                    696 ;	main.c:47: }
+      0000DC 22               [24]  697 	ret
                                     698 ;------------------------------------------------------------
-                                    699 ;	main.c:49: void main(void)
-                                    700 ;	-----------------------------------------
-                                    701 ;	 function main
+                                    699 ;Allocation info for local variables in function 'main'
+                                    700 ;------------------------------------------------------------
+                                    701 ;	main.c:49: void main(void)
                                     702 ;	-----------------------------------------
-      0000DA                        703 _main:
-                                    704 ;	main.c:51: DelayInit();
-      0000DA 12 01 19         [24]  705 	lcall	_DelayInit
-                                    706 ;	main.c:52: GPIO_Init();
-      0000DD 12 01 E4         [24]  707 	lcall	_GPIO_Init
-                                    708 ;	main.c:53: UART0_Init();
-      0000E0 12 01 40         [24]  709 	lcall	_UART0_Init
-                                    710 ;	main.c:55: while (1) 
-      0000E3                        711 00102$:
-                                    712 ;	main.c:57: LED = 1;
-                                    713 ;	assignBit
-      0000E3 D2 95            [12]  714 	setb	_P15
-                                    715 ;	main.c:58: DelayMs(100);
-      0000E5 90 00 64         [24]  716 	mov	dptr,#0x0064
-      0000E8 12 01 25         [24]  717 	lcall	_DelayMs
-                                    718 ;	main.c:59: LED = 0;
-                                    719 ;	assignBit
-      0000EB C2 95            [12]  720 	clr	_P15
-                                    721 ;	main.c:60: DelayMs(100);
-      0000ED 90 00 64         [24]  722 	mov	dptr,#0x0064
-      0000F0 12 01 25         [24]  723 	lcall	_DelayMs
-                                    724 ;	main.c:62: }
-      0000F3 80 EE            [24]  725 	sjmp	00102$
-                                    726 	.area CSEG    (CODE)
-                                    727 	.area CONST   (CODE)
-                                    728 	.area CONST   (CODE)
-      0009B9                        729 ___str_0:
-      0009B9 50 6F 72 74 20 76 61   730 	.ascii "Port value: %d"
+                                    703 ;	 function main
+                                    704 ;	-----------------------------------------
+      0000DD                        705 _main:
+                                    706 ;	main.c:51: DelayInit();
+      0000DD 12 01 0F         [24]  707 	lcall	_DelayInit
+                                    708 ;	main.c:52: GPIO_Init();
+      0000E0 12 01 DA         [24]  709 	lcall	_GPIO_Init
+                                    710 ;	main.c:53: UART0_Init();
+      0000E3 12 01 36         [24]  711 	lcall	_UART0_Init
+                                    712 ;	main.c:55: while (1) 
+      0000E6                        713 00102$:
+                                    714 ;	main.c:57: check_request();
+      0000E6 12 00 B6         [24]  715 	lcall	_check_request
+                                    716 ;	main.c:59: }
+      0000E9 80 FB            [24]  717 	sjmp	00102$
+                                    718 	.area CSEG    (CODE)
+                                    719 	.area CONST   (CODE)
+                                    720 	.area CONST   (CODE)
+      0009AF                        721 ___str_0:
+      0009AF 50 6F 72 74 20 76 61   722 	.ascii "Port value: %d"
              6C 75 65 3A 20 25 64
-      0009C7 0A                     731 	.db 0x0a
-      0009C8 00                     732 	.db 0x00
-                                    733 	.area CSEG    (CODE)
-                                    734 	.area XINIT   (CODE)
-                                    735 	.area CABS    (ABS,CODE)
+      0009BD 0A                     723 	.db 0x0a
+      0009BE 00                     724 	.db 0x00
+                                    725 	.area CSEG    (CODE)
+                                    726 	.area XINIT   (CODE)
+                                    727 	.area CABS    (ABS,CODE)

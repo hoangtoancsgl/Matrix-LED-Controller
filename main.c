@@ -18,7 +18,7 @@
 #define IN3 P03
 #define IN4 P04
 
-#define Enter_button P05
+#define Enter_button P12
 
 void select_program(char program)
 {
@@ -41,7 +41,7 @@ void check_request()
     if(!Enter_button)
     {
         while(!Enter_button);
-        char port_value = SW_PORT;
+        char port_value = SW_PORT&0x1F;
         printf("Port value: %d\n", port_value);
     }
 }
@@ -54,10 +54,7 @@ void main(void)
 
     while (1) 
     {
-        LED = 1;
-        DelayMs(100);
-        LED = 0;
-        DelayMs(100);
+        check_request();
     }
 }
 

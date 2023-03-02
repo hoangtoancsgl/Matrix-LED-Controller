@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ISO C Compiler 
-; Version 4.2.9 #13731 (Linux)
+; File Created by SDCC : free open source ANSI-C Compiler
+; Version 4.2.0 #13081 (MINGW64)
 ;--------------------------------------------------------
 	.module main
 	.optsdcc -mmcs51 --model-small
@@ -505,7 +505,7 @@ _MOSI	=	0x0080
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
-	.area SSEG
+	.area	SSEG
 __start__stack:
 	.ds	1
 
@@ -527,7 +527,7 @@ __start__stack:
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; uninitialized external ram data
+; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 ;--------------------------------------------------------
@@ -535,7 +535,7 @@ __start__stack:
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; initialized external ram data
+; external initialized ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)
@@ -670,12 +670,14 @@ _select_program:
 ;	-----------------------------------------
 _check_request:
 ;	main.c:41: if(!Enter_button)
-	jb	_P05,00106$
+	jb	_P12,00106$
 ;	main.c:43: while(!Enter_button);
 00101$:
-	jnb	_P05,00101$
-;	main.c:44: char port_value = SW_PORT;
-	mov	r7,_P0
+	jnb	_P12,00101$
+;	main.c:44: char port_value = SW_PORT&0x1F;
+	mov	a,_P0
+	anl	a,#0x1f
+	mov	r7,a
 ;	main.c:45: printf("Port value: %d\n", port_value);
 	mov	r6,#0x00
 	push	ar7
@@ -709,19 +711,9 @@ _main:
 	lcall	_UART0_Init
 ;	main.c:55: while (1) 
 00102$:
-;	main.c:57: LED = 1;
-;	assignBit
-	setb	_P15
-;	main.c:58: DelayMs(100);
-	mov	dptr,#0x0064
-	lcall	_DelayMs
-;	main.c:59: LED = 0;
-;	assignBit
-	clr	_P15
-;	main.c:60: DelayMs(100);
-	mov	dptr,#0x0064
-	lcall	_DelayMs
-;	main.c:62: }
+;	main.c:57: check_request();
+	lcall	_check_request
+;	main.c:59: }
 	sjmp	00102$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)

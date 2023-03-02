@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ISO C Compiler 
-; Version 4.2.9 #13731 (Linux)
+; File Created by SDCC : free open source ANSI-C Compiler
+; Version 4.2.0 #13081 (MINGW64)
 ;--------------------------------------------------------
 	.module gpio
 	.optsdcc -mmcs51 --model-small
@@ -513,7 +513,7 @@ _MOSI	=	0x0080
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; uninitialized external ram data
+; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 ;--------------------------------------------------------
@@ -521,7 +521,7 @@ _MOSI	=	0x0080
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; initialized external ram data
+; external initialized ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)
@@ -591,30 +591,30 @@ _GPIO_Init:
 	anl	_P0M1,#0xfe
 ;	gpio.c:31: P0M2 |= ~(1 << 0);
 	orl	_P0M2,#0xfe
-;	gpio.c:33: P00 = 1;
+;	gpio.c:33: P00 = 0;
 ;	assignBit
-	setb	_P00
+	clr	_P00
 ;	gpio.c:37: P0M1 &= ~(1 << 1);
 	anl	_P0M1,#0xfd
 ;	gpio.c:38: P0M2 |= ~(1 << 1);
 	orl	_P0M2,#0xfd
-;	gpio.c:40: P01 = 1;
+;	gpio.c:40: P01 = 0;
 ;	assignBit
-	setb	_P01
+	clr	_P01
 ;	gpio.c:44: P0M1 &= ~(1 << 2);
 	anl	_P0M1,#0xfb
 ;	gpio.c:45: P0M2 |= ~(1 << 2);
 	orl	_P0M2,#0xfb
-;	gpio.c:47: P02 = 1;
+;	gpio.c:47: P02 = 0;
 ;	assignBit
-	setb	_P02
+	clr	_P02
 ;	gpio.c:51: P0M1 &= ~(1 << 3);
 	anl	_P0M1,#0xf7
 ;	gpio.c:52: P0M2 |= ~(1 << 3);
 	orl	_P0M2,#0xf7
-;	gpio.c:54: P03 = 1;
+;	gpio.c:54: P03 = 0;
 ;	assignBit
-	setb	_P03
+	clr	_P03
 ;	gpio.c:58: P0M1 &= ~(1 << 4);
 	anl	_P0M1,#0xef
 ;	gpio.c:59: P0M2 |= ~(1 << 4);
@@ -622,13 +622,13 @@ _GPIO_Init:
 ;	gpio.c:61: P04 = 1;
 ;	assignBit
 	setb	_P04
-;	gpio.c:65: P0M1 &= ~(1 << 5);
-	anl	_P0M1,#0xdf
-;	gpio.c:66: P0M2 |= ~(1 << 5);
-	orl	_P0M2,#0xdf
-;	gpio.c:68: P05 = 1;
+;	gpio.c:65: P1M1 &= ~(1 << 2);
+	anl	_P1M1,#0xfb
+;	gpio.c:66: P1M2 |= ~(1 << 2);
+	orl	_P1M2,#0xfb
+;	gpio.c:68: P12 = 1;
 ;	assignBit
-	setb	_P05
+	setb	_P12
 ;	gpio.c:69: }
 	ret
 	.area CSEG    (CODE)

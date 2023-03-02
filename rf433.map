@@ -80,9 +80,9 @@ C:   00000062  s_CSEG
 C:   00000080  l_DSEG                          
 C:   000000BD  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   00000957  l_CSEG                          
-C:   000009B9  s_CONST                         
-C:   000009D4  s_XINIT                         
+C:   0000094D  l_CSEG                          
+C:   000009AF  s_CONST                         
+C:   000009CA  s_XINIT                         
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -489,40 +489,40 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                00000062    00000957 =        2391. bytes (REL,CON,CODE)
+CSEG                                00000062    0000094D =        2381. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   00000062  _select_program                    main
 C:   000000B6  _check_request                     main
-C:   000000DA  _main                              main
-C:   00000119  _DelayInit                         myDelay
-C:   00000125  _DelayMs                           myDelay
-C:   00000140  _UART0_Init                        uart0
-C:   00000172  _UART0_SendData                    uart0
-C:   00000185  _UART0_SendString                  uart0
-C:   000001B0  _UART0_GetData                     uart0
-C:   000001B4  _UART0_EnableInterrupt             uart0
-C:   000001B7  _UART0_DisableInterrupt            uart0
-C:   000001BA  _UART0_ClearFlag                   uart0
-C:   000001C0  _UART0_GetFlag                     uart0
-C:   000001CE  _putchar                           uart0
-C:   000001E4  _GPIO_Init                         gpio
-C:   0000023C  _vprintf                           vprintf
-C:   00000255  _printf                            vprintf
-C:   00000316  __print_format                     printf_large
-C:   00000964  _strlen                            _strlen
-C:   0000097C  __mulint                           _mulint
-C:   0000097C  __mulint_dummy                     _mulint
-C:   00000999  __gptrget                          _gptrget
-C:   000009B5  __sdcc_external_startup            _startup
+C:   000000DD  _main                              main
+C:   0000010F  _DelayInit                         myDelay
+C:   0000011B  _DelayMs                           myDelay
+C:   00000136  _UART0_Init                        uart0
+C:   00000168  _UART0_SendData                    uart0
+C:   0000017B  _UART0_SendString                  uart0
+C:   000001A6  _UART0_GetData                     uart0
+C:   000001AA  _UART0_EnableInterrupt             uart0
+C:   000001AD  _UART0_DisableInterrupt            uart0
+C:   000001B0  _UART0_ClearFlag                   uart0
+C:   000001B6  _UART0_GetFlag                     uart0
+C:   000001C4  _putchar                           uart0
+C:   000001DA  _GPIO_Init                         gpio
+C:   00000232  _vprintf                           vprintf
+C:   0000024B  _printf                            vprintf
+C:   0000030C  __print_format                     printf_large
+C:   0000095A  _strlen                            _strlen
+C:   00000972  __mulint                           _mulint
+C:   00000972  __mulint_dummy                     _mulint
+C:   0000098F  __gptrget                          _gptrget
+C:   000009AB  __sdcc_external_startup            _startup
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 20.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               000009B9    0000001B =          27. bytes (REL,CON,CODE)
+CONST                               000009AF    0000001B =          27. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -538,29 +538,29 @@ obj/gpio.rel                              [  ]
 
 Libraries Linked                          [ object file ]
 
-/usr/local/bin/../share/sdcc/lib/small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtclear.rel ]
-/usr/local/bin/../share/sdcc/lib/small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtxinit.rel ]
-/usr/local/bin/../share/sdcc/lib/small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtxclear.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
                                           [ vprintf.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
                                           [ printf_large.rel ]
-/usr/local/bin/../share/sdcc/lib/small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtpagesfr.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
                                           [ _strlen.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libint.lib
+C:\Program Files\SDCC\bin\..\lib\small/libint.lib
                                           [ _mulint.rel ]
-/usr/local/bin/../share/sdcc/lib/small/mcs51.lib
+C:\Program Files\SDCC\bin\..\lib\small/mcs51.lib
                                           [ crtstart.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
                                           [ _gptrget.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
                                           [ _startup.rel ]
-/usr/local/bin/../share/sdcc/lib/small/libsdcc.lib
+C:\Program Files\SDCC\bin\..\lib\small/libsdcc.lib
                                           [ _bp.rel ]
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 22.
