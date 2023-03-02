@@ -1,0 +1,21 @@
+-muwx
+-i rf433.ihx
+-M
+-b HOME = 0x0000
+-b XSEG = 0x0001
+-b PSEG = 0x0001
+-b ISEG = 0x0000
+-b BSEG = 0x0000
+-k /usr/local/bin/../share/sdcc/lib/small
+-k /usr/local/share/sdcc/lib/small
+-l mcs51
+-l libsdcc
+-l libint
+-l liblong
+-l libfloat
+obj/main.rel
+obj/myDelay.rel
+obj/uart0.rel
+obj/gpio.rel
+
+-e
