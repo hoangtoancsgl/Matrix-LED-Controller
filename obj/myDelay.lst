@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 4.2.0 #13081 (MINGW64)
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.9 #13731 (Linux)
                                       4 ;--------------------------------------------------------
                                       5 	.module myDelay
                                       6 	.optsdcc -mmcs51 --model-small
@@ -514,7 +514,7 @@
                                     514 ;--------------------------------------------------------
                                     515 	.area PSEG    (PAG,XDATA)
                                     516 ;--------------------------------------------------------
-                                    517 ; external ram data
+                                    517 ; uninitialized external ram data
                                     518 ;--------------------------------------------------------
                                     519 	.area XSEG    (XDATA)
                                     520 ;--------------------------------------------------------
@@ -522,7 +522,7 @@
                                     522 ;--------------------------------------------------------
                                     523 	.area XABS    (ABS,XDATA)
                                     524 ;--------------------------------------------------------
-                                    525 ; external initialized ram data
+                                    525 ; initialized external ram data
                                     526 ;--------------------------------------------------------
                                     527 	.area XISEG   (XDATA)
                                     528 	.area HOME    (CODE)

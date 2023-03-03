@@ -10,14 +10,10 @@
 #define RESET_OPTO P10
 #define ADD_OPTO P10
 
-/*Input*/
+/*Input: 5 switch are connected to P0, from P00 to P04*/
 #define SW_PORT P0
-#define IN0 P00
-#define IN1 P01
-#define IN2 P02
-#define IN3 P03
-#define IN4 P04
 
+/*Enter button to export data to LED card*/
 #define Enter_button P12
 
 void select_program(char program)
@@ -41,8 +37,13 @@ void check_request()
     if(!Enter_button)
     {
         while(!Enter_button);
-        char port_value = SW_PORT&0x1F;
-        printf("Port value: %d\n", port_value);
+        char  program = SW_PORT&0x1F;
+        
+        if(program>=0 && program<=31) 
+        {
+            printf("Program %d\ selected!\n", program);
+            select_program(program);
+        }
     }
 }
 

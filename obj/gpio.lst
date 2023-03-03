@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 4.2.0 #13081 (MINGW64)
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.9 #13731 (Linux)
                                       4 ;--------------------------------------------------------
                                       5 	.module gpio
                                       6 	.optsdcc -mmcs51 --model-small
@@ -513,7 +513,7 @@
                                     513 ;--------------------------------------------------------
                                     514 	.area PSEG    (PAG,XDATA)
                                     515 ;--------------------------------------------------------
-                                    516 ; external ram data
+                                    516 ; uninitialized external ram data
                                     517 ;--------------------------------------------------------
                                     518 	.area XSEG    (XDATA)
                                     519 ;--------------------------------------------------------
@@ -521,7 +521,7 @@
                                     521 ;--------------------------------------------------------
                                     522 	.area XABS    (ABS,XDATA)
                                     523 ;--------------------------------------------------------
-                                    524 ; external initialized ram data
+                                    524 ; initialized external ram data
                                     525 ;--------------------------------------------------------
                                     526 	.area XISEG   (XDATA)
                                     527 	.area HOME    (CODE)

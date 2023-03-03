@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
-                                      3 ; Version 4.2.0 #13081 (MINGW64)
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.9 #13731 (Linux)
                                       4 ;--------------------------------------------------------
                                       5 	.module uart0
                                       6 	.optsdcc -mmcs51 --model-small
@@ -525,7 +525,7 @@
                                     525 ;--------------------------------------------------------
                                     526 	.area PSEG    (PAG,XDATA)
                                     527 ;--------------------------------------------------------
-                                    528 ; external ram data
+                                    528 ; uninitialized external ram data
                                     529 ;--------------------------------------------------------
                                     530 	.area XSEG    (XDATA)
                                     531 ;--------------------------------------------------------
@@ -533,7 +533,7 @@
                                     533 ;--------------------------------------------------------
                                     534 	.area XABS    (ABS,XDATA)
                                     535 ;--------------------------------------------------------
-                                    536 ; external initialized ram data
+                                    536 ; initialized external ram data
                                     537 ;--------------------------------------------------------
                                     538 	.area XISEG   (XDATA)
                                     539 	.area HOME    (CODE)
