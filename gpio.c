@@ -18,7 +18,13 @@ void GPIO_Init(void)
 	P1M2 |= (1 << 0);
 	P10 = 0;
 	
-    /*ADD_OPTO - P11*/
+    /*ADD_OPTO - P13*/
+	/* Push-pull */
+	P1M1 &= ~(1 << 3);
+	P1M2 |= (1 << 3);
+	P13 = 0;
+
+	/*SUB_OPTO - P11*/
 	/* Push-pull */
 	P1M1 &= ~(1 << 1);
 	P1M2 |= (1 << 1);
@@ -30,28 +36,28 @@ void GPIO_Init(void)
 	P0M1 &= ~(1 << 0);
 	P0M2 |= ~(1 << 0);
 	//pull high
-	P00 = 0;
+	P00 = 1;
 
 	/* IN1 - P01 */
 	/* Quasi */
 	P0M1 &= ~(1 << 1);
 	P0M2 |= ~(1 << 1);
 	//pull high
-	P01 = 0;
+	P01 = 1;
 
 	/* IN1 - P02 */
 	/* Quasi */
 	P0M1 &= ~(1 << 2);
 	P0M2 |= ~(1 << 2);
 	//pull high
-	P02 = 0;
+	P02 = 1;
 
 	/* IN1 - P03 */
 	/* Quasi */
 	P0M1 &= ~(1 << 3);
 	P0M2 |= ~(1 << 3);
 	//pull high
-	P03 = 0;
+	P03 = 1;
 
 	/* IN1 - P04 */
 	/* Quasi */

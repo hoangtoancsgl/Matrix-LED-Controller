@@ -1,6 +1,6 @@
                                       1 ;--------------------------------------------------------
-                                      2 ; File Created by SDCC : free open source ISO C Compiler 
-                                      3 ; Version 4.2.9 #13731 (Linux)
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.2.0 #13081 (MINGW64)
                                       4 ;--------------------------------------------------------
                                       5 	.module main
                                       6 	.optsdcc -mmcs51 --model-small
@@ -505,7 +505,7 @@
                                     505 ;--------------------------------------------------------
                                     506 ; Stack segment in internal ram
                                     507 ;--------------------------------------------------------
-                                    508 	.area SSEG
+                                    508 	.area	SSEG
       000043                        509 __start__stack:
       000043                        510 	.ds	1
                                     511 
@@ -527,7 +527,7 @@
                                     527 ;--------------------------------------------------------
                                     528 	.area PSEG    (PAG,XDATA)
                                     529 ;--------------------------------------------------------
-                                    530 ; uninitialized external ram data
+                                    530 ; external ram data
                                     531 ;--------------------------------------------------------
                                     532 	.area XSEG    (XDATA)
                                     533 ;--------------------------------------------------------
@@ -535,7 +535,7 @@
                                     535 ;--------------------------------------------------------
                                     536 	.area XABS    (ABS,XDATA)
                                     537 ;--------------------------------------------------------
-                                    538 ; initialized external ram data
+                                    538 ; external initialized ram data
                                     539 ;--------------------------------------------------------
                                     540 	.area XISEG   (XDATA)
                                     541 	.area HOME    (CODE)
@@ -575,7 +575,7 @@
                                     575 	.area HOME    (CODE)
                                     576 	.area HOME    (CODE)
       000003                        577 __sdcc_program_startup:
-      000003 02 00 DD         [24]  578 	ljmp	_main
+      000003 02 01 40         [24]  578 	ljmp	_main
                                     579 ;	return from main will return to caller
                                     580 ;--------------------------------------------------------
                                     581 ; code
@@ -586,143 +586,215 @@
                                     586 ;------------------------------------------------------------
                                     587 ;program                   Allocated to registers r7 
                                     588 ;i                         Allocated to registers r5 r6 
-                                    589 ;------------------------------------------------------------
-                                    590 ;	main.c:23: void select_program(char program)
-                                    591 ;	-----------------------------------------
-                                    592 ;	 function select_program
-                                    593 ;	-----------------------------------------
-      000062                        594 _select_program:
-                           000007   595 	ar7 = 0x07
-                           000006   596 	ar6 = 0x06
-                           000005   597 	ar5 = 0x05
-                           000004   598 	ar4 = 0x04
-                           000003   599 	ar3 = 0x03
-                           000002   600 	ar2 = 0x02
-                           000001   601 	ar1 = 0x01
-                           000000   602 	ar0 = 0x00
-      000062 AF 82            [24]  603 	mov	r7,dpl
-                                    604 ;	main.c:25: RESET_OPTO = 1;
-                                    605 ;	assignBit
-      000064 D2 90            [12]  606 	setb	_P10
-                                    607 ;	main.c:26: DelayMs(10);
-      000066 90 00 0A         [24]  608 	mov	dptr,#0x000a
-      000069 C0 07            [24]  609 	push	ar7
-      00006B 12 01 1B         [24]  610 	lcall	_DelayMs
-                                    611 ;	main.c:27: RESET_OPTO = 0;
-                                    612 ;	assignBit
-      00006E C2 90            [12]  613 	clr	_P10
-                                    614 ;	main.c:28: DelayMs(10);
-      000070 90 00 0A         [24]  615 	mov	dptr,#0x000a
-      000073 12 01 1B         [24]  616 	lcall	_DelayMs
-      000076 D0 07            [24]  617 	pop	ar7
-                                    618 ;	main.c:29: if(program>0)
-      000078 EF               [12]  619 	mov	a,r7
-      000079 60 3A            [24]  620 	jz	00107$
-                                    621 ;	main.c:30: for(int i=0; i < program; i++)
-      00007B 7D 00            [12]  622 	mov	r5,#0x00
-      00007D 7E 00            [12]  623 	mov	r6,#0x00
-      00007F                        624 00105$:
-      00007F 8F 03            [24]  625 	mov	ar3,r7
-      000081 7C 00            [12]  626 	mov	r4,#0x00
-      000083 C3               [12]  627 	clr	c
-      000084 ED               [12]  628 	mov	a,r5
-      000085 9B               [12]  629 	subb	a,r3
-      000086 EE               [12]  630 	mov	a,r6
-      000087 64 80            [12]  631 	xrl	a,#0x80
-      000089 8C F0            [24]  632 	mov	b,r4
-      00008B 63 F0 80         [24]  633 	xrl	b,#0x80
-      00008E 95 F0            [12]  634 	subb	a,b
-      000090 50 23            [24]  635 	jnc	00107$
-                                    636 ;	main.c:32: ADD_OPTO = 1;
-                                    637 ;	assignBit
-      000092 D2 90            [12]  638 	setb	_P10
-                                    639 ;	main.c:33: DelayMs(200);
-      000094 90 00 C8         [24]  640 	mov	dptr,#0x00c8
-      000097 C0 07            [24]  641 	push	ar7
-      000099 C0 06            [24]  642 	push	ar6
-      00009B C0 05            [24]  643 	push	ar5
-      00009D 12 01 1B         [24]  644 	lcall	_DelayMs
-                                    645 ;	main.c:34: ADD_OPTO = 0;
+                                    589 ;i                         Allocated to registers r5 r6 
+                                    590 ;------------------------------------------------------------
+                                    591 ;	main.c:20: void select_program(char program)
+                                    592 ;	-----------------------------------------
+                                    593 ;	 function select_program
+                                    594 ;	-----------------------------------------
+      000062                        595 _select_program:
+                           000007   596 	ar7 = 0x07
+                           000006   597 	ar6 = 0x06
+                           000005   598 	ar5 = 0x05
+                           000004   599 	ar4 = 0x04
+                           000003   600 	ar3 = 0x03
+                           000002   601 	ar2 = 0x02
+                           000001   602 	ar1 = 0x01
+                           000000   603 	ar0 = 0x00
+      000062 AF 82            [24]  604 	mov	r7,dpl
+                                    605 ;	main.c:22: RESET_OPTO = 1;
+                                    606 ;	assignBit
+      000064 D2 90            [12]  607 	setb	_P10
+                                    608 ;	main.c:23: DelayMs(10);
+      000066 90 00 0A         [24]  609 	mov	dptr,#0x000a
+      000069 C0 07            [24]  610 	push	ar7
+      00006B 12 01 7E         [24]  611 	lcall	_DelayMs
+                                    612 ;	main.c:24: RESET_OPTO = 0;
+                                    613 ;	assignBit
+      00006E C2 90            [12]  614 	clr	_P10
+                                    615 ;	main.c:25: DelayMs(10);
+      000070 90 00 0A         [24]  616 	mov	dptr,#0x000a
+      000073 12 01 7E         [24]  617 	lcall	_DelayMs
+      000076 D0 07            [24]  618 	pop	ar7
+                                    619 ;	main.c:26: if(program>0)
+      000078 EF               [12]  620 	mov	a,r7
+      000079 70 01            [24]  621 	jnz	00142$
+      00007B 22               [24]  622 	ret
+      00007C                        623 00142$:
+                                    624 ;	main.c:28: if(program<=16)
+      00007C EF               [12]  625 	mov	a,r7
+      00007D 24 EF            [12]  626 	add	a,#0xff - 0x10
+      00007F 40 3B            [24]  627 	jc	00121$
+                                    628 ;	main.c:30: for(int i=0; i < program; i++)
+      000081 7D 00            [12]  629 	mov	r5,#0x00
+      000083 7E 00            [12]  630 	mov	r6,#0x00
+      000085                        631 00109$:
+      000085 8F 03            [24]  632 	mov	ar3,r7
+      000087 7C 00            [12]  633 	mov	r4,#0x00
+      000089 C3               [12]  634 	clr	c
+      00008A ED               [12]  635 	mov	a,r5
+      00008B 9B               [12]  636 	subb	a,r3
+      00008C EE               [12]  637 	mov	a,r6
+      00008D 64 80            [12]  638 	xrl	a,#0x80
+      00008F 8C F0            [24]  639 	mov	b,r4
+      000091 63 F0 80         [24]  640 	xrl	b,#0x80
+      000094 95 F0            [12]  641 	subb	a,b
+      000096 40 01            [24]  642 	jc	00144$
+      000098 22               [24]  643 	ret
+      000099                        644 00144$:
+                                    645 ;	main.c:32: ADD_OPTO = 1;
                                     646 ;	assignBit
-      0000A0 C2 90            [12]  647 	clr	_P10
-                                    648 ;	main.c:35: DelayMs(200);
-      0000A2 90 00 C8         [24]  649 	mov	dptr,#0x00c8
-      0000A5 12 01 1B         [24]  650 	lcall	_DelayMs
-      0000A8 D0 05            [24]  651 	pop	ar5
-      0000AA D0 06            [24]  652 	pop	ar6
-      0000AC D0 07            [24]  653 	pop	ar7
-                                    654 ;	main.c:30: for(int i=0; i < program; i++)
-      0000AE 0D               [12]  655 	inc	r5
-      0000AF BD 00 CD         [24]  656 	cjne	r5,#0x00,00105$
-      0000B2 0E               [12]  657 	inc	r6
-      0000B3 80 CA            [24]  658 	sjmp	00105$
-      0000B5                        659 00107$:
-                                    660 ;	main.c:37: }
-      0000B5 22               [24]  661 	ret
-                                    662 ;------------------------------------------------------------
-                                    663 ;Allocation info for local variables in function 'check_request'
-                                    664 ;------------------------------------------------------------
-                                    665 ;port_value                Allocated to registers r7 
-                                    666 ;------------------------------------------------------------
-                                    667 ;	main.c:39: void check_request()
-                                    668 ;	-----------------------------------------
-                                    669 ;	 function check_request
-                                    670 ;	-----------------------------------------
-      0000B6                        671 _check_request:
-                                    672 ;	main.c:41: if(!Enter_button)
-      0000B6 20 92 23         [24]  673 	jb	_P12,00106$
-                                    674 ;	main.c:43: while(!Enter_button);
-      0000B9                        675 00101$:
-      0000B9 30 92 FD         [24]  676 	jnb	_P12,00101$
-                                    677 ;	main.c:44: char port_value = SW_PORT&0x1F;
-      0000BC E5 80            [12]  678 	mov	a,_P0
-      0000BE 54 1F            [12]  679 	anl	a,#0x1f
-      0000C0 FF               [12]  680 	mov	r7,a
-                                    681 ;	main.c:45: printf("Port value: %d\n", port_value);
-      0000C1 7E 00            [12]  682 	mov	r6,#0x00
-      0000C3 C0 07            [24]  683 	push	ar7
-      0000C5 C0 06            [24]  684 	push	ar6
-      0000C7 74 AF            [12]  685 	mov	a,#___str_0
-      0000C9 C0 E0            [24]  686 	push	acc
-      0000CB 74 09            [12]  687 	mov	a,#(___str_0 >> 8)
-      0000CD C0 E0            [24]  688 	push	acc
-      0000CF 74 80            [12]  689 	mov	a,#0x80
-      0000D1 C0 E0            [24]  690 	push	acc
-      0000D3 12 02 4B         [24]  691 	lcall	_printf
-      0000D6 E5 81            [12]  692 	mov	a,sp
-      0000D8 24 FB            [12]  693 	add	a,#0xfb
-      0000DA F5 81            [12]  694 	mov	sp,a
-      0000DC                        695 00106$:
-                                    696 ;	main.c:47: }
-      0000DC 22               [24]  697 	ret
-                                    698 ;------------------------------------------------------------
-                                    699 ;Allocation info for local variables in function 'main'
-                                    700 ;------------------------------------------------------------
-                                    701 ;	main.c:49: void main(void)
-                                    702 ;	-----------------------------------------
-                                    703 ;	 function main
-                                    704 ;	-----------------------------------------
-      0000DD                        705 _main:
-                                    706 ;	main.c:51: DelayInit();
-      0000DD 12 01 0F         [24]  707 	lcall	_DelayInit
-                                    708 ;	main.c:52: GPIO_Init();
-      0000E0 12 01 DA         [24]  709 	lcall	_GPIO_Init
-                                    710 ;	main.c:53: UART0_Init();
-      0000E3 12 01 36         [24]  711 	lcall	_UART0_Init
-                                    712 ;	main.c:55: while (1) 
-      0000E6                        713 00102$:
-                                    714 ;	main.c:57: check_request();
-      0000E6 12 00 B6         [24]  715 	lcall	_check_request
-                                    716 ;	main.c:59: }
-      0000E9 80 FB            [24]  717 	sjmp	00102$
-                                    718 	.area CSEG    (CODE)
-                                    719 	.area CONST   (CODE)
-                                    720 	.area CONST   (CODE)
-      0009AF                        721 ___str_0:
-      0009AF 50 6F 72 74 20 76 61   722 	.ascii "Port value: %d"
-             6C 75 65 3A 20 25 64
-      0009BD 0A                     723 	.db 0x0a
-      0009BE 00                     724 	.db 0x00
-                                    725 	.area CSEG    (CODE)
-                                    726 	.area XINIT   (CODE)
-                                    727 	.area CABS    (ABS,CODE)
+      000099 D2 93            [12]  647 	setb	_P13
+                                    648 ;	main.c:33: DelayMs(200);
+      00009B 90 00 C8         [24]  649 	mov	dptr,#0x00c8
+      00009E C0 07            [24]  650 	push	ar7
+      0000A0 C0 06            [24]  651 	push	ar6
+      0000A2 C0 05            [24]  652 	push	ar5
+      0000A4 12 01 7E         [24]  653 	lcall	_DelayMs
+                                    654 ;	main.c:34: ADD_OPTO = 0;
+                                    655 ;	assignBit
+      0000A7 C2 93            [12]  656 	clr	_P13
+                                    657 ;	main.c:35: DelayMs(200);
+      0000A9 90 00 C8         [24]  658 	mov	dptr,#0x00c8
+      0000AC 12 01 7E         [24]  659 	lcall	_DelayMs
+      0000AF D0 05            [24]  660 	pop	ar5
+      0000B1 D0 06            [24]  661 	pop	ar6
+      0000B3 D0 07            [24]  662 	pop	ar7
+                                    663 ;	main.c:30: for(int i=0; i < program; i++)
+      0000B5 0D               [12]  664 	inc	r5
+                                    665 ;	main.c:40: for(int i=0; i < 32-program; i++)
+      0000B6 BD 00 CC         [24]  666 	cjne	r5,#0x00,00109$
+      0000B9 0E               [12]  667 	inc	r6
+      0000BA 80 C9            [24]  668 	sjmp	00109$
+      0000BC                        669 00121$:
+      0000BC 7D 00            [12]  670 	mov	r5,#0x00
+      0000BE 7E 00            [12]  671 	mov	r6,#0x00
+      0000C0                        672 00112$:
+      0000C0 8F 03            [24]  673 	mov	ar3,r7
+      0000C2 7C 00            [12]  674 	mov	r4,#0x00
+      0000C4 74 20            [12]  675 	mov	a,#0x20
+      0000C6 C3               [12]  676 	clr	c
+      0000C7 9B               [12]  677 	subb	a,r3
+      0000C8 FB               [12]  678 	mov	r3,a
+      0000C9 E4               [12]  679 	clr	a
+      0000CA 9C               [12]  680 	subb	a,r4
+      0000CB FC               [12]  681 	mov	r4,a
+      0000CC C3               [12]  682 	clr	c
+      0000CD ED               [12]  683 	mov	a,r5
+      0000CE 9B               [12]  684 	subb	a,r3
+      0000CF EE               [12]  685 	mov	a,r6
+      0000D0 64 80            [12]  686 	xrl	a,#0x80
+      0000D2 8C F0            [24]  687 	mov	b,r4
+      0000D4 63 F0 80         [24]  688 	xrl	b,#0x80
+      0000D7 95 F0            [12]  689 	subb	a,b
+      0000D9 50 23            [24]  690 	jnc	00114$
+                                    691 ;	main.c:42: SUB_OPTO = 1;
+                                    692 ;	assignBit
+      0000DB D2 91            [12]  693 	setb	_P11
+                                    694 ;	main.c:43: DelayMs(200);
+      0000DD 90 00 C8         [24]  695 	mov	dptr,#0x00c8
+      0000E0 C0 07            [24]  696 	push	ar7
+      0000E2 C0 06            [24]  697 	push	ar6
+      0000E4 C0 05            [24]  698 	push	ar5
+      0000E6 12 01 7E         [24]  699 	lcall	_DelayMs
+                                    700 ;	main.c:44: SUB_OPTO = 0;
+                                    701 ;	assignBit
+      0000E9 C2 91            [12]  702 	clr	_P11
+                                    703 ;	main.c:45: DelayMs(200);
+      0000EB 90 00 C8         [24]  704 	mov	dptr,#0x00c8
+      0000EE 12 01 7E         [24]  705 	lcall	_DelayMs
+      0000F1 D0 05            [24]  706 	pop	ar5
+      0000F3 D0 06            [24]  707 	pop	ar6
+      0000F5 D0 07            [24]  708 	pop	ar7
+                                    709 ;	main.c:40: for(int i=0; i < 32-program; i++)
+      0000F7 0D               [12]  710 	inc	r5
+      0000F8 BD 00 C5         [24]  711 	cjne	r5,#0x00,00112$
+      0000FB 0E               [12]  712 	inc	r6
+      0000FC 80 C2            [24]  713 	sjmp	00112$
+      0000FE                        714 00114$:
+                                    715 ;	main.c:49: }
+      0000FE 22               [24]  716 	ret
+                                    717 ;------------------------------------------------------------
+                                    718 ;Allocation info for local variables in function 'check_request'
+                                    719 ;------------------------------------------------------------
+                                    720 ;program                   Allocated to registers r7 
+                                    721 ;------------------------------------------------------------
+                                    722 ;	main.c:51: void check_request()
+                                    723 ;	-----------------------------------------
+                                    724 ;	 function check_request
+                                    725 ;	-----------------------------------------
+      0000FF                        726 _check_request:
+                                    727 ;	main.c:53: if(!Enter_button)
+      0000FF 20 92 3D         [24]  728 	jb	_P12,00111$
+                                    729 ;	main.c:55: DelayMs(20);
+      000102 90 00 14         [24]  730 	mov	dptr,#0x0014
+      000105 12 01 7E         [24]  731 	lcall	_DelayMs
+                                    732 ;	main.c:56: if(!Enter_button)
+      000108 20 92 34         [24]  733 	jb	_P12,00111$
+                                    734 ;	main.c:58: while(!Enter_button);
+      00010B                        735 00101$:
+      00010B 30 92 FD         [24]  736 	jnb	_P12,00101$
+                                    737 ;	main.c:59: char  program = SW_PORT&0x1F;
+      00010E E5 80            [12]  738 	mov	a,_P0
+      000110 54 1F            [12]  739 	anl	a,#0x1f
+                                    740 ;	main.c:60: program = program^0x1F;
+      000112 64 1F            [12]  741 	xrl	a,#0x1f
+                                    742 ;	main.c:61: if(program>=0 && program<=31) 
+      000114 FF               [12]  743 	mov  r7,a
+      000115 24 E0            [12]  744 	add	a,#0xff - 0x1f
+      000117 40 26            [24]  745 	jc	00111$
+                                    746 ;	main.c:63: printf("Program %d\ selected!\n", program);
+      000119 8F 05            [24]  747 	mov	ar5,r7
+      00011B 7E 00            [12]  748 	mov	r6,#0x00
+      00011D C0 07            [24]  749 	push	ar7
+      00011F C0 05            [24]  750 	push	ar5
+      000121 C0 06            [24]  751 	push	ar6
+      000123 74 1A            [12]  752 	mov	a,#___str_0
+      000125 C0 E0            [24]  753 	push	acc
+      000127 74 0A            [12]  754 	mov	a,#(___str_0 >> 8)
+      000129 C0 E0            [24]  755 	push	acc
+      00012B 74 80            [12]  756 	mov	a,#0x80
+      00012D C0 E0            [24]  757 	push	acc
+      00012F 12 02 B6         [24]  758 	lcall	_printf
+      000132 E5 81            [12]  759 	mov	a,sp
+      000134 24 FB            [12]  760 	add	a,#0xfb
+      000136 F5 81            [12]  761 	mov	sp,a
+      000138 D0 07            [24]  762 	pop	ar7
+                                    763 ;	main.c:64: select_program(program);
+      00013A 8F 82            [24]  764 	mov	dpl,r7
+                                    765 ;	main.c:69: }
+      00013C 02 00 62         [24]  766 	ljmp	_select_program
+      00013F                        767 00111$:
+      00013F 22               [24]  768 	ret
+                                    769 ;------------------------------------------------------------
+                                    770 ;Allocation info for local variables in function 'main'
+                                    771 ;------------------------------------------------------------
+                                    772 ;	main.c:71: void main(void)
+                                    773 ;	-----------------------------------------
+                                    774 ;	 function main
+                                    775 ;	-----------------------------------------
+      000140                        776 _main:
+                                    777 ;	main.c:73: DelayInit();
+      000140 12 01 72         [24]  778 	lcall	_DelayInit
+                                    779 ;	main.c:74: GPIO_Init();
+      000143 12 02 3D         [24]  780 	lcall	_GPIO_Init
+                                    781 ;	main.c:75: UART0_Init();
+      000146 12 01 99         [24]  782 	lcall	_UART0_Init
+                                    783 ;	main.c:77: while (1) 
+      000149                        784 00102$:
+                                    785 ;	main.c:79: check_request();
+      000149 12 00 FF         [24]  786 	lcall	_check_request
+                                    787 ;	main.c:81: }
+      00014C 80 FB            [24]  788 	sjmp	00102$
+                                    789 	.area CSEG    (CODE)
+                                    790 	.area CONST   (CODE)
+                                    791 	.area CONST   (CODE)
+      000A1A                        792 ___str_0:
+      000A1A 50 72 6F 67 72 61 6D   793 	.ascii "Program %d selected!"
+             20 25 64 20 73 65 6C
+             65 63 74 65 64 21
+      000A2E 0A                     794 	.db 0x0a
+      000A2F 00                     795 	.db 0x00
+                                    796 	.area CSEG    (CODE)
+                                    797 	.area XINIT   (CODE)
+                                    798 	.area CABS    (ABS,CODE)

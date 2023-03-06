@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ISO C Compiler 
-; Version 4.2.9 #13731 (Linux)
+; File Created by SDCC : free open source ANSI-C Compiler
+; Version 4.2.0 #13081 (MINGW64)
 ;--------------------------------------------------------
 	.module myDelay
 	.optsdcc -mmcs51 --model-small
@@ -514,7 +514,7 @@ _MOSI	=	0x0080
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; uninitialized external ram data
+; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 ;--------------------------------------------------------
@@ -522,7 +522,7 @@ _MOSI	=	0x0080
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; initialized external ram data
+; external initialized ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)

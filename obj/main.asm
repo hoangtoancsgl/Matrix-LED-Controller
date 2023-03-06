@@ -1,6 +1,6 @@
 ;--------------------------------------------------------
-; File Created by SDCC : free open source ISO C Compiler 
-; Version 4.2.9 #13731 (Linux)
+; File Created by SDCC : free open source ANSI-C Compiler
+; Version 4.2.0 #13081 (MINGW64)
 ;--------------------------------------------------------
 	.module main
 	.optsdcc -mmcs51 --model-small
@@ -505,7 +505,7 @@ _MOSI	=	0x0080
 ;--------------------------------------------------------
 ; Stack segment in internal ram
 ;--------------------------------------------------------
-	.area SSEG
+	.area	SSEG
 __start__stack:
 	.ds	1
 
@@ -527,7 +527,7 @@ __start__stack:
 ;--------------------------------------------------------
 	.area PSEG    (PAG,XDATA)
 ;--------------------------------------------------------
-; uninitialized external ram data
+; external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
 ;--------------------------------------------------------
@@ -535,7 +535,7 @@ __start__stack:
 ;--------------------------------------------------------
 	.area XABS    (ABS,XDATA)
 ;--------------------------------------------------------
-; initialized external ram data
+; external initialized ram data
 ;--------------------------------------------------------
 	.area XISEG   (XDATA)
 	.area HOME    (CODE)
@@ -586,8 +586,9 @@ __sdcc_program_startup:
 ;------------------------------------------------------------
 ;program                   Allocated to registers r7 
 ;i                         Allocated to registers r5 r6 
+;i                         Allocated to registers r5 r6 
 ;------------------------------------------------------------
-;	main.c:23: void select_program(char program)
+;	main.c:20: void select_program(char program)
 ;	-----------------------------------------
 ;	 function select_program
 ;	-----------------------------------------
@@ -601,27 +602,33 @@ _select_program:
 	ar1 = 0x01
 	ar0 = 0x00
 	mov	r7,dpl
-;	main.c:25: RESET_OPTO = 1;
+;	main.c:22: RESET_OPTO = 1;
 ;	assignBit
 	setb	_P10
-;	main.c:26: DelayMs(10);
+;	main.c:23: DelayMs(10);
 	mov	dptr,#0x000a
 	push	ar7
 	lcall	_DelayMs
-;	main.c:27: RESET_OPTO = 0;
+;	main.c:24: RESET_OPTO = 0;
 ;	assignBit
 	clr	_P10
-;	main.c:28: DelayMs(10);
+;	main.c:25: DelayMs(10);
 	mov	dptr,#0x000a
 	lcall	_DelayMs
 	pop	ar7
-;	main.c:29: if(program>0)
+;	main.c:26: if(program>0)
 	mov	a,r7
-	jz	00107$
+	jnz	00142$
+	ret
+00142$:
+;	main.c:28: if(program<=16)
+	mov	a,r7
+	add	a,#0xff - 0x10
+	jc	00121$
 ;	main.c:30: for(int i=0; i < program; i++)
 	mov	r5,#0x00
 	mov	r6,#0x00
-00105$:
+00109$:
 	mov	ar3,r7
 	mov	r4,#0x00
 	clr	c
@@ -632,10 +639,12 @@ _select_program:
 	mov	b,r4
 	xrl	b,#0x80
 	subb	a,b
-	jnc	00107$
+	jc	00144$
+	ret
+00144$:
 ;	main.c:32: ADD_OPTO = 1;
 ;	assignBit
-	setb	_P10
+	setb	_P13
 ;	main.c:33: DelayMs(200);
 	mov	dptr,#0x00c8
 	push	ar7
@@ -644,7 +653,7 @@ _select_program:
 	lcall	_DelayMs
 ;	main.c:34: ADD_OPTO = 0;
 ;	assignBit
-	clr	_P10
+	clr	_P13
 ;	main.c:35: DelayMs(200);
 	mov	dptr,#0x00c8
 	lcall	_DelayMs
@@ -653,34 +662,92 @@ _select_program:
 	pop	ar7
 ;	main.c:30: for(int i=0; i < program; i++)
 	inc	r5
-	cjne	r5,#0x00,00105$
+;	main.c:40: for(int i=0; i < 32-program; i++)
+	cjne	r5,#0x00,00109$
 	inc	r6
-	sjmp	00105$
-00107$:
-;	main.c:37: }
+	sjmp	00109$
+00121$:
+	mov	r5,#0x00
+	mov	r6,#0x00
+00112$:
+	mov	ar3,r7
+	mov	r4,#0x00
+	mov	a,#0x20
+	clr	c
+	subb	a,r3
+	mov	r3,a
+	clr	a
+	subb	a,r4
+	mov	r4,a
+	clr	c
+	mov	a,r5
+	subb	a,r3
+	mov	a,r6
+	xrl	a,#0x80
+	mov	b,r4
+	xrl	b,#0x80
+	subb	a,b
+	jnc	00114$
+;	main.c:42: SUB_OPTO = 1;
+;	assignBit
+	setb	_P11
+;	main.c:43: DelayMs(200);
+	mov	dptr,#0x00c8
+	push	ar7
+	push	ar6
+	push	ar5
+	lcall	_DelayMs
+;	main.c:44: SUB_OPTO = 0;
+;	assignBit
+	clr	_P11
+;	main.c:45: DelayMs(200);
+	mov	dptr,#0x00c8
+	lcall	_DelayMs
+	pop	ar5
+	pop	ar6
+	pop	ar7
+;	main.c:40: for(int i=0; i < 32-program; i++)
+	inc	r5
+	cjne	r5,#0x00,00112$
+	inc	r6
+	sjmp	00112$
+00114$:
+;	main.c:49: }
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'check_request'
 ;------------------------------------------------------------
-;port_value                Allocated to registers r7 
+;program                   Allocated to registers r7 
 ;------------------------------------------------------------
-;	main.c:39: void check_request()
+;	main.c:51: void check_request()
 ;	-----------------------------------------
 ;	 function check_request
 ;	-----------------------------------------
 _check_request:
-;	main.c:41: if(!Enter_button)
-	jb	_P12,00106$
-;	main.c:43: while(!Enter_button);
+;	main.c:53: if(!Enter_button)
+	jb	_P12,00111$
+;	main.c:55: DelayMs(20);
+	mov	dptr,#0x0014
+	lcall	_DelayMs
+;	main.c:56: if(!Enter_button)
+	jb	_P12,00111$
+;	main.c:58: while(!Enter_button);
 00101$:
 	jnb	_P12,00101$
-;	main.c:44: char port_value = SW_PORT&0x1F;
+;	main.c:59: char  program = SW_PORT&0x1F;
 	mov	a,_P0
 	anl	a,#0x1f
-	mov	r7,a
-;	main.c:45: printf("Port value: %d\n", port_value);
+;	main.c:60: program = program^0x1F;
+	xrl	a,#0x1f
+;	main.c:61: if(program>=0 && program<=31) 
+	mov  r7,a
+	add	a,#0xff - 0x1f
+	jc	00111$
+;	main.c:63: printf("Program %d\ selected!\n", program);
+	mov	ar5,r7
 	mov	r6,#0x00
 	push	ar7
+	push	ar5
 	push	ar6
 	mov	a,#___str_0
 	push	acc
@@ -692,34 +759,38 @@ _check_request:
 	mov	a,sp
 	add	a,#0xfb
 	mov	sp,a
-00106$:
-;	main.c:47: }
+	pop	ar7
+;	main.c:64: select_program(program);
+	mov	dpl,r7
+;	main.c:69: }
+	ljmp	_select_program
+00111$:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	main.c:49: void main(void)
+;	main.c:71: void main(void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	main.c:51: DelayInit();
+;	main.c:73: DelayInit();
 	lcall	_DelayInit
-;	main.c:52: GPIO_Init();
+;	main.c:74: GPIO_Init();
 	lcall	_GPIO_Init
-;	main.c:53: UART0_Init();
+;	main.c:75: UART0_Init();
 	lcall	_UART0_Init
-;	main.c:55: while (1) 
+;	main.c:77: while (1) 
 00102$:
-;	main.c:57: check_request();
+;	main.c:79: check_request();
 	lcall	_check_request
-;	main.c:59: }
+;	main.c:81: }
 	sjmp	00102$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)
 ___str_0:
-	.ascii "Port value: %d"
+	.ascii "Program %d selected!"
 	.db 0x0a
 	.db 0x00
 	.area CSEG    (CODE)
