@@ -80,9 +80,9 @@ C:   00000062  s_CSEG
 C:   00000080  l_DSEG                          
 C:   000000BD  l_SSEG                          
 C:   00000100  l_IRAM                          
-C:   000009B8  l_CSEG                          
-C:   00000A1A  s_CONST                         
-C:   00000A3B  s_XINIT                         
+C:   000009FF  l_CSEG                          
+C:   00000A61  s_CONST                         
+C:   00000A82  s_XINIT                         
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
@@ -489,40 +489,40 @@ Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CSEG                                00000062    000009B8 =        2488. bytes (REL,CON,CODE)
+CSEG                                00000062    000009FF =        2559. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
 C:   00000062  _select_program                    main
-C:   000000FF  _check_request                     main
-C:   00000140  _main                              main
-C:   00000172  _DelayInit                         myDelay
-C:   0000017E  _DelayMs                           myDelay
-C:   00000199  _UART0_Init                        uart0
-C:   000001CB  _UART0_SendData                    uart0
-C:   000001DE  _UART0_SendString                  uart0
-C:   00000209  _UART0_GetData                     uart0
-C:   0000020D  _UART0_EnableInterrupt             uart0
-C:   00000210  _UART0_DisableInterrupt            uart0
-C:   00000213  _UART0_ClearFlag                   uart0
-C:   00000219  _UART0_GetFlag                     uart0
-C:   00000227  _putchar                           uart0
-C:   0000023D  _GPIO_Init                         gpio
-C:   0000029D  _vprintf                           vprintf
-C:   000002B6  _printf                            vprintf
-C:   00000377  __print_format                     printf_large
-C:   000009C5  _strlen                            _strlen
-C:   000009DD  __mulint                           _mulint
-C:   000009DD  __mulint_dummy                     _mulint
-C:   000009FA  __gptrget                          _gptrget
-C:   00000A16  __sdcc_external_startup            _startup
-
+C:   000000FF  _check_button                      main
+C:   0000011A  _handle_request                    main
+C:   0000014C  _main                              main
+C:   000001B9  _DelayInit                         myDelay
+C:   000001C5  _DelayMs                           myDelay
+C:   000001E0  _UART0_Init                        uart0
+C:   00000212  _UART0_SendData                    uart0
+C:   00000225  _UART0_SendString                  uart0
+C:   00000250  _UART0_GetData                     uart0
+C:   00000254  _UART0_EnableInterrupt             uart0
+C:   00000257  _UART0_DisableInterrupt            uart0
+C:   0000025A  _UART0_ClearFlag                   uart0
+C:   00000260  _UART0_GetFlag                     uart0
+C:   0000026E  _putchar                           uart0
+C:   00000284  _GPIO_Init                         gpio
+C:   000002E4  _vprintf                           vprintf
+C:   000002FD  _printf                            vprintf
+C:   000003BE  __print_format                     printf_large
+C:   00000A0C  _strlen                            _strlen
+C:   00000A24  __mulint                           _mulint
+C:   00000A24  __mulint_dummy                     _mulint
+C:   00000A41  __gptrget                          _gptrget
+C:   00000A5D  __sdcc_external_startup            _startup
 ASxxxx Linker V03.00 + NoICE + sdld,  page 20.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-CONST                               00000A1A    00000021 =          33. bytes (REL,CON,CODE)
+CONST                               00000A61    00000021 =          33. bytes (REL,CON,CODE)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------

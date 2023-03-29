@@ -9,7 +9,8 @@
 ; Public variables in this module
 ;--------------------------------------------------------
 	.globl _main
-	.globl _check_request
+	.globl _handle_request
+	.globl _check_button
 	.globl _select_program
 	.globl _GPIO_Init
 	.globl _UART0_Init
@@ -645,8 +646,8 @@ _select_program:
 ;	main.c:32: ADD_OPTO = 1;
 ;	assignBit
 	setb	_P13
-;	main.c:33: DelayMs(200);
-	mov	dptr,#0x00c8
+;	main.c:33: DelayMs(300);
+	mov	dptr,#0x012c
 	push	ar7
 	push	ar6
 	push	ar5
@@ -654,8 +655,8 @@ _select_program:
 ;	main.c:34: ADD_OPTO = 0;
 ;	assignBit
 	clr	_P13
-;	main.c:35: DelayMs(200);
-	mov	dptr,#0x00c8
+;	main.c:35: DelayMs(300);
+	mov	dptr,#0x012c
 	lcall	_DelayMs
 	pop	ar5
 	pop	ar6
@@ -691,8 +692,8 @@ _select_program:
 ;	main.c:42: SUB_OPTO = 1;
 ;	assignBit
 	setb	_P11
-;	main.c:43: DelayMs(200);
-	mov	dptr,#0x00c8
+;	main.c:43: DelayMs(300);
+	mov	dptr,#0x012c
 	push	ar7
 	push	ar6
 	push	ar5
@@ -700,8 +701,8 @@ _select_program:
 ;	main.c:44: SUB_OPTO = 0;
 ;	assignBit
 	clr	_P11
-;	main.c:45: DelayMs(200);
-	mov	dptr,#0x00c8
+;	main.c:45: DelayMs(300);
+	mov	dptr,#0x012c
 	lcall	_DelayMs
 	pop	ar5
 	pop	ar6
@@ -715,35 +716,55 @@ _select_program:
 ;	main.c:49: }
 	ret
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'check_request'
+;Allocation info for local variables in function 'check_button'
 ;------------------------------------------------------------
-;program                   Allocated to registers r7 
-;------------------------------------------------------------
-;	main.c:51: void check_request()
+;	main.c:51: char check_button()
 ;	-----------------------------------------
-;	 function check_request
+;	 function check_button
 ;	-----------------------------------------
-_check_request:
+_check_button:
 ;	main.c:53: if(!Enter_button)
-	jb	_P12,00111$
+	jb	_P12,00108$
 ;	main.c:55: DelayMs(20);
 	mov	dptr,#0x0014
 	lcall	_DelayMs
 ;	main.c:56: if(!Enter_button)
-	jb	_P12,00111$
+	jb	_P12,00105$
 ;	main.c:58: while(!Enter_button);
 00101$:
 	jnb	_P12,00101$
-;	main.c:59: char  program = SW_PORT&0x1F;
+;	main.c:59: return 1;
+	mov	dpl,#0x01
+	ret
+00105$:
+;	main.c:61: else return 0; 
+	mov	dpl,#0x00
+	ret
+00108$:
+;	main.c:63: return 0;
+	mov	dpl,#0x00
+;	main.c:64: }
+	ret
+;------------------------------------------------------------
+;Allocation info for local variables in function 'handle_request'
+;------------------------------------------------------------
+;program                   Allocated to registers r7 
+;------------------------------------------------------------
+;	main.c:66: void handle_request()
+;	-----------------------------------------
+;	 function handle_request
+;	-----------------------------------------
+_handle_request:
+;	main.c:68: char program = SW_PORT&0x1F;
 	mov	a,_P0
 	anl	a,#0x1f
-;	main.c:60: program = program^0x1F;
+;	main.c:69: program = program^0x1F;
 	xrl	a,#0x1f
-;	main.c:61: if(program>=0 && program<=31) 
+;	main.c:70: if(program>=0 && program<=31) 
 	mov  r7,a
 	add	a,#0xff - 0x1f
-	jc	00111$
-;	main.c:63: printf("Program %d\ selected!\n", program);
+	jc	00104$
+;	main.c:72: printf("Program %d\ selected!\n", program);
 	mov	ar5,r7
 	mov	r6,#0x00
 	push	ar7
@@ -760,32 +781,69 @@ _check_request:
 	add	a,#0xfb
 	mov	sp,a
 	pop	ar7
-;	main.c:64: select_program(program);
+;	main.c:73: select_program(program);
 	mov	dpl,r7
-;	main.c:69: }
+;	main.c:76: }
 	ljmp	_select_program
-00111$:
+00104$:
 	ret
 ;------------------------------------------------------------
 ;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;	main.c:71: void main(void)
+;current_status            Allocated to registers r7 
+;------------------------------------------------------------
+;	main.c:78: void main(void)
 ;	-----------------------------------------
 ;	 function main
 ;	-----------------------------------------
 _main:
-;	main.c:73: DelayInit();
+;	main.c:80: DelayInit();
 	lcall	_DelayInit
-;	main.c:74: GPIO_Init();
+;	main.c:81: GPIO_Init();
 	lcall	_GPIO_Init
-;	main.c:75: UART0_Init();
+;	main.c:82: UART0_Init();
 	lcall	_UART0_Init
-;	main.c:77: while (1) 
+;	main.c:84: char current_status = SW_PORT&0x1F;
+	mov	a,_P0
+	anl	a,#0x1f
+	mov	r7,a
+;	main.c:85: while(1) 
+00106$:
+;	main.c:87: if(check_button()) handle_request();
+	push	ar7
+	lcall	_check_button
+	mov	a,dpl
+	pop	ar7
+	jz	00102$
+	push	ar7
+	lcall	_handle_request
+	pop	ar7
 00102$:
-;	main.c:79: check_request();
-	lcall	_check_request
-;	main.c:81: }
-	sjmp	00102$
+;	main.c:88: if((SW_PORT&0x1F) != current_status) 
+	mov	r5,_P0
+	anl	ar5,#0x1f
+	mov	r6,#0x00
+	mov	ar3,r7
+	mov	r4,#0x00
+	mov	a,r5
+	cjne	a,ar3,00123$
+	mov	a,r6
+	cjne	a,ar4,00123$
+	sjmp	00106$
+00123$:
+;	main.c:90: DelayMs(200);
+	mov	dptr,#0x00c8
+	lcall	_DelayMs
+;	main.c:91: current_status = SW_PORT&0x1F;
+	mov	a,_P0
+	anl	a,#0x1f
+	mov	r7,a
+;	main.c:92: handle_request();
+	push	ar7
+	lcall	_handle_request
+	pop	ar7
+;	main.c:95: }
+	sjmp	00106$
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
 	.area CONST   (CODE)
