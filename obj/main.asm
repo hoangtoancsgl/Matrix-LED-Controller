@@ -8,13 +8,13 @@
 ;--------------------------------------------------------
 ; Public variables in this module
 ;--------------------------------------------------------
+	.globl _RF_pin_ISR
 	.globl _main
-	.globl _check_request
-	.globl _select_program
+	.globl _diff
+	.globl _receiveProtocol
+	.globl _initSwitch
 	.globl _GPIO_Init
 	.globl _UART0_Init
-	.globl _printf
-	.globl _DelayMs
 	.globl _DelayInit
 	.globl _MOSI
 	.globl _P00
@@ -248,6 +248,7 @@
 	.globl _DPL
 	.globl _SP
 	.globl _P0
+	.globl _myRCSwitch
 ;--------------------------------------------------------
 ; special function registers
 ;--------------------------------------------------------
@@ -496,9 +497,29 @@ _MOSI	=	0x0080
 	.area REG_BANK_0	(REL,OVR,DATA)
 	.ds 8
 ;--------------------------------------------------------
+; overlayable bit register bank
+;--------------------------------------------------------
+	.area BIT_BANK	(REL,OVR,DATA)
+bits:
+	.ds 1
+	b0 = bits[0]
+	b1 = bits[1]
+	b2 = bits[2]
+	b3 = bits[3]
+	b4 = bits[4]
+	b5 = bits[5]
+	b6 = bits[6]
+	b7 = bits[7]
+;--------------------------------------------------------
 ; internal ram data
 ;--------------------------------------------------------
 	.area DSEG    (DATA)
+_RF_pin_ISR_changeCount_65536_35:
+	.ds 2
+_RF_pin_ISR_lastTime_65536_35:
+	.ds 4
+_RF_pin_ISR_repeatCount_65536_35:
+	.ds 2
 ;--------------------------------------------------------
 ; overlayable items in internal ram
 ;--------------------------------------------------------
@@ -530,6 +551,8 @@ __start__stack:
 ; uninitialized external ram data
 ;--------------------------------------------------------
 	.area XSEG    (XDATA)
+_myRCSwitch::
+	.ds 158
 ;--------------------------------------------------------
 ; absolute external ram data
 ;--------------------------------------------------------
@@ -554,6 +577,21 @@ __start__stack:
 	.area HOME    (CODE)
 __interrupt_vect:
 	ljmp	__sdcc_gsinit_startup
+	reti
+	.ds	7
+	reti
+	.ds	7
+	reti
+	.ds	7
+	reti
+	.ds	7
+	reti
+	.ds	7
+	reti
+	.ds	7
+	reti
+	.ds	7
+	ljmp	_RF_pin_ISR
 ;--------------------------------------------------------
 ; global & static initialisations
 ;--------------------------------------------------------
@@ -567,6 +605,28 @@ __interrupt_vect:
 	.globl __mcs51_genXINIT
 	.globl __mcs51_genXRAMCLEAR
 	.globl __mcs51_genRAMCLEAR
+;------------------------------------------------------------
+;Allocation info for local variables in function 'RF_pin_ISR'
+;------------------------------------------------------------
+;changeCount               Allocated with name '_RF_pin_ISR_changeCount_65536_35'
+;lastTime                  Allocated with name '_RF_pin_ISR_lastTime_65536_35'
+;repeatCount               Allocated with name '_RF_pin_ISR_repeatCount_65536_35'
+;RCSwitch                  Allocated to registers 
+;time                      Allocated to registers 
+;duration                  Allocated to registers r6 r7 
+;------------------------------------------------------------
+;	main.c:36: static unsigned int changeCount = 0;
+	clr	a
+	mov	_RF_pin_ISR_changeCount_65536_35,a
+	mov	(_RF_pin_ISR_changeCount_65536_35 + 1),a
+;	main.c:37: static unsigned long lastTime = 0;
+	mov	_RF_pin_ISR_lastTime_65536_35,a
+	mov	(_RF_pin_ISR_lastTime_65536_35 + 1),a
+	mov	(_RF_pin_ISR_lastTime_65536_35 + 2),a
+	mov	(_RF_pin_ISR_lastTime_65536_35 + 3),a
+;	main.c:38: static unsigned int repeatCount = 0;
+	mov	_RF_pin_ISR_repeatCount_65536_35,a
+	mov	(_RF_pin_ISR_repeatCount_65536_35 + 1),a
 	.area GSFINAL (CODE)
 	ljmp	__sdcc_program_startup
 ;--------------------------------------------------------
@@ -582,16 +642,13 @@ __sdcc_program_startup:
 ;--------------------------------------------------------
 	.area CSEG    (CODE)
 ;------------------------------------------------------------
-;Allocation info for local variables in function 'select_program'
+;Allocation info for local variables in function 'main'
 ;------------------------------------------------------------
-;program                   Allocated to registers r7 
-;i                         Allocated to registers r5 r6 
-;------------------------------------------------------------
-;	main.c:23: void select_program(char program)
+;	main.c:16: void main(void)
 ;	-----------------------------------------
-;	 function select_program
+;	 function main
 ;	-----------------------------------------
-_select_program:
+_main:
 	ar7 = 0x07
 	ar6 = 0x06
 	ar5 = 0x05
@@ -600,128 +657,195 @@ _select_program:
 	ar2 = 0x02
 	ar1 = 0x01
 	ar0 = 0x00
-	mov	r7,dpl
-;	main.c:25: RESET_OPTO = 1;
-;	assignBit
-	setb	_P10
-;	main.c:26: DelayMs(10);
-	mov	dptr,#0x000a
-	push	ar7
-	lcall	_DelayMs
-;	main.c:27: RESET_OPTO = 0;
-;	assignBit
-	clr	_P10
-;	main.c:28: DelayMs(10);
-	mov	dptr,#0x000a
-	lcall	_DelayMs
-	pop	ar7
-;	main.c:29: if(program>0)
-	mov	a,r7
-	jz	00107$
-;	main.c:30: for(int i=0; i < program; i++)
-	mov	r5,#0x00
-	mov	r6,#0x00
-00105$:
-	mov	ar3,r7
-	mov	r4,#0x00
+;	main.c:18: DelayInit();
+	lcall	_DelayInit
+;	main.c:19: GPIO_Init();
+	lcall	_GPIO_Init
+;	main.c:20: UART0_Init();
+	lcall	_UART0_Init
+;	main.c:22: initSwitch(&myRCSwitch);
+	mov	dptr,#_myRCSwitch
+	mov	b,#0x00
+	lcall	_initSwitch
+;	main.c:24: while (1) 
+00102$:
+;	main.c:28: }
+	sjmp	00102$
+;------------------------------------------------------------
+;Allocation info for local variables in function 'RF_pin_ISR'
+;------------------------------------------------------------
+;changeCount               Allocated with name '_RF_pin_ISR_changeCount_65536_35'
+;lastTime                  Allocated with name '_RF_pin_ISR_lastTime_65536_35'
+;repeatCount               Allocated with name '_RF_pin_ISR_repeatCount_65536_35'
+;RCSwitch                  Allocated to registers 
+;time                      Allocated to registers 
+;duration                  Allocated to registers r6 r7 
+;------------------------------------------------------------
+;	main.c:32: void RF_pin_ISR(void) __interrupt (7)
+;	-----------------------------------------
+;	 function RF_pin_ISR
+;	-----------------------------------------
+_RF_pin_ISR:
+	push	bits
+	push	acc
+	push	b
+	push	dpl
+	push	dph
+	push	(0+7)
+	push	(0+6)
+	push	(0+5)
+	push	(0+4)
+	push	(0+3)
+	push	(0+2)
+	push	(0+1)
+	push	(0+0)
+	push	psw
+	mov	psw,#0x00
+;	main.c:34: __xdata RCSWITCH_t * __data RCSwitch  = &myRCSwitch;
+;	main.c:41: const unsigned int duration = time - lastTime;
+	mov	r6,_RF_pin_ISR_lastTime_65536_35
+	mov	r7,(_RF_pin_ISR_lastTime_65536_35 + 1)
 	clr	c
+	clr	a
+	subb	a,r6
+	mov	r6,a
+	clr	a
+	subb	a,r7
+	mov	r7,a
+;	main.c:43: if (duration > RCSwitch->nSeparationLimit) {
+	mov	dptr,#(_myRCSwitch + 0x000c)
+	movx	a,@dptr
+	mov	r4,a
+	inc	dptr
+	movx	a,@dptr
+	mov	r5,a
+	clr	c
+	mov	a,r4
+	subb	a,r6
 	mov	a,r5
-	subb	a,r3
-	mov	a,r6
-	xrl	a,#0x80
-	mov	b,r4
-	xrl	b,#0x80
-	subb	a,b
-	jnc	00107$
-;	main.c:32: ADD_OPTO = 1;
-;	assignBit
-	setb	_P10
-;	main.c:33: DelayMs(200);
-	mov	dptr,#0x00c8
+	subb	a,r7
+	jnc	00108$
+;	main.c:46: if (diff(duration, RCSwitch->timings[0]) < 200) {
+	mov	dptr,#(_myRCSwitch + 0x000e)
+	movx	a,@dptr
+	mov	_diff_PARM_2,a
+	inc	dptr
+	movx	a,@dptr
+	mov	(_diff_PARM_2 + 1),a
+	mov	dpl,r6
+	mov	dph,r7
 	push	ar7
 	push	ar6
-	push	ar5
-	lcall	_DelayMs
-;	main.c:34: ADD_OPTO = 0;
-;	assignBit
-	clr	_P10
-;	main.c:35: DelayMs(200);
-	mov	dptr,#0x00c8
-	lcall	_DelayMs
-	pop	ar5
+	lcall	_diff
+	mov	r4,dpl
+	mov	r5,dph
 	pop	ar6
 	pop	ar7
-;	main.c:30: for(int i=0; i < program; i++)
-	inc	r5
-	cjne	r5,#0x00,00105$
-	inc	r6
-	sjmp	00105$
-00107$:
-;	main.c:37: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'check_request'
-;------------------------------------------------------------
-;port_value                Allocated to registers r7 
-;------------------------------------------------------------
-;	main.c:39: void check_request()
-;	-----------------------------------------
-;	 function check_request
-;	-----------------------------------------
-_check_request:
-;	main.c:41: if(!Enter_button)
-	jb	_P12,00106$
-;	main.c:43: while(!Enter_button);
-00101$:
-	jnb	_P12,00101$
-;	main.c:44: char port_value = SW_PORT&0x1F;
-	mov	a,_P0
-	anl	a,#0x1f
-	mov	r7,a
-;	main.c:45: printf("Port value: %d\n", port_value);
-	mov	r6,#0x00
+	clr	c
+	mov	a,r4
+	subb	a,#0xc8
+	mov	a,r5
+	subb	a,#0x00
+	jnc	00106$
+;	main.c:52: repeatCount++;
+	inc	_RF_pin_ISR_repeatCount_65536_35
+	clr	a
+	cjne	a,_RF_pin_ISR_repeatCount_65536_35,00135$
+	inc	(_RF_pin_ISR_repeatCount_65536_35 + 1)
+00135$:
+;	main.c:53: if(repeatCount == 2) 
+	mov	a,#0x02
+	cjne	a,_RF_pin_ISR_repeatCount_65536_35,00136$
+	clr	a
+	cjne	a,(_RF_pin_ISR_repeatCount_65536_35 + 1),00136$
+	sjmp	00137$
+00136$:
+	sjmp	00106$
+00137$:
+;	main.c:54: if(receiveProtocol(RCSwitch, changeCount)) repeatCount = 0;		
+	mov	_receiveProtocol_PARM_2,_RF_pin_ISR_changeCount_65536_35
+	mov	(_receiveProtocol_PARM_2 + 1),(_RF_pin_ISR_changeCount_65536_35 + 1)
+	mov	dptr,#_myRCSwitch
+	mov	b,#0x00
 	push	ar7
 	push	ar6
-	mov	a,#___str_0
-	push	acc
-	mov	a,#(___str_0 >> 8)
-	push	acc
-	mov	a,#0x80
-	push	acc
-	lcall	_printf
-	mov	a,sp
-	add	a,#0xfb
-	mov	sp,a
+	lcall	_receiveProtocol
+	mov	a,dpl
+	pop	ar6
+	pop	ar7
+	jz	00106$
+	clr	a
+	mov	_RF_pin_ISR_repeatCount_65536_35,a
+	mov	(_RF_pin_ISR_repeatCount_65536_35 + 1),a
 00106$:
-;	main.c:47: }
-	ret
-;------------------------------------------------------------
-;Allocation info for local variables in function 'main'
-;------------------------------------------------------------
-;	main.c:49: void main(void)
-;	-----------------------------------------
-;	 function main
-;	-----------------------------------------
-_main:
-;	main.c:51: DelayInit();
-	lcall	_DelayInit
-;	main.c:52: GPIO_Init();
-	lcall	_GPIO_Init
-;	main.c:53: UART0_Init();
-	lcall	_UART0_Init
-;	main.c:55: while (1) 
-00102$:
-;	main.c:57: check_request();
-	lcall	_check_request
-;	main.c:59: }
-	sjmp	00102$
+;	main.c:56: changeCount = 0;
+	clr	a
+	mov	_RF_pin_ISR_changeCount_65536_35,a
+	mov	(_RF_pin_ISR_changeCount_65536_35 + 1),a
+00108$:
+;	main.c:59: if (changeCount >= RCSWITCH_MAX_CHANGES) {
+	clr	c
+	mov	a,_RF_pin_ISR_changeCount_65536_35
+	subb	a,#0x43
+	mov	a,(_RF_pin_ISR_changeCount_65536_35 + 1)
+	subb	a,#0x00
+	jc	00110$
+;	main.c:60: changeCount = 0;
+	clr	a
+	mov	_RF_pin_ISR_changeCount_65536_35,a
+	mov	(_RF_pin_ISR_changeCount_65536_35 + 1),a
+;	main.c:61: repeatCount = 0;
+	mov	_RF_pin_ISR_repeatCount_65536_35,a
+	mov	(_RF_pin_ISR_repeatCount_65536_35 + 1),a
+00110$:
+;	main.c:64: RCSwitch->timings[changeCount++] = duration;
+	mov	r4,_RF_pin_ISR_changeCount_65536_35
+	mov	r5,(_RF_pin_ISR_changeCount_65536_35 + 1)
+	inc	_RF_pin_ISR_changeCount_65536_35
+	clr	a
+	cjne	a,_RF_pin_ISR_changeCount_65536_35,00140$
+	inc	(_RF_pin_ISR_changeCount_65536_35 + 1)
+00140$:
+	mov	a,r4
+	add	a,r4
+	mov	r4,a
+	mov	a,r5
+	rlc	a
+	mov	r5,a
+	mov	a,r4
+	add	a,#(_myRCSwitch + 0x000e)
+	mov	dpl,a
+	mov	a,r5
+	addc	a,#((_myRCSwitch + 0x000e) >> 8)
+	mov	dph,a
+	mov	a,r6
+	movx	@dptr,a
+	mov	a,r7
+	inc	dptr
+	movx	@dptr,a
+;	main.c:65: lastTime = time;
+	clr	a
+	mov	_RF_pin_ISR_lastTime_65536_35,a
+	mov	(_RF_pin_ISR_lastTime_65536_35 + 1),a
+	mov	(_RF_pin_ISR_lastTime_65536_35 + 2),a
+	mov	(_RF_pin_ISR_lastTime_65536_35 + 3),a
+;	main.c:66: }
+	pop	psw
+	pop	(0+0)
+	pop	(0+1)
+	pop	(0+2)
+	pop	(0+3)
+	pop	(0+4)
+	pop	(0+5)
+	pop	(0+6)
+	pop	(0+7)
+	pop	dph
+	pop	dpl
+	pop	b
+	pop	acc
+	pop	bits
+	reti
 	.area CSEG    (CODE)
 	.area CONST   (CODE)
-	.area CONST   (CODE)
-___str_0:
-	.ascii "Port value: %d"
-	.db 0x0a
-	.db 0x00
-	.area CSEG    (CODE)
 	.area XINIT   (CODE)
 	.area CABS    (ABS,CODE)

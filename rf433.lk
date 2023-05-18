@@ -17,5 +17,6 @@ obj/main.rel
 obj/myDelay.rel
 obj/uart0.rel
 obj/gpio.rel
+obj/RCSwitch.rel
 
 -e

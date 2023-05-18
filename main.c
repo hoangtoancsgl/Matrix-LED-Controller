@@ -5,47 +5,13 @@
 #include "uart0.h"
 #include "gpio.h"
 
-/*Output*/
+#include "RCSwitch.h"
+
+/*LED Output*/
 #define LED P15
-#define RESET_OPTO P10
-#define ADD_OPTO P10
 
-/*Input: 5 switch are connected to P0, from P00 to P04*/
-#define SW_PORT P0
+__xdata RCSWITCH_t myRCSwitch;
 
-/*Enter button to export data to LED card*/
-#define Enter_button P12
-
-void select_program(char program)
-{
-  RESET_OPTO = 1;
-  DelayMs(10);
-  RESET_OPTO = 0;
-  DelayMs(10);
-  if(program>0)
-    for(int i=0; i < program; i++)
-    {
-      ADD_OPTO = 1;
-      DelayMs(200);
-      ADD_OPTO = 0;
-      DelayMs(200);
-    }
-}
-
-void check_request()
-{
-    if(!Enter_button)
-    {
-        while(!Enter_button);
-        char  program = SW_PORT&0x1F;
-        
-        if(program>=0 && program<=31) 
-        {
-            printf("Program %d\ selected!\n", program);
-            select_program(program);
-        }
-    }
-}
 
 void main(void)
 {
@@ -53,13 +19,48 @@ void main(void)
     GPIO_Init();
     UART0_Init();
 
+    initSwitch(&myRCSwitch);
+
     while (1) 
     {
-        check_request();
+        
     }
 }
 
 
 
+void RF_pin_ISR(void) __interrupt (7)
+{
+    __xdata RCSWITCH_t * __data RCSwitch  = &myRCSwitch;
 
+	static unsigned int changeCount = 0;
+	static unsigned long lastTime = 0;
+	static unsigned int repeatCount = 0;
 
+	const long time = 0; // = micros();
+	const unsigned int duration = time - lastTime;
+
+	if (duration > RCSwitch->nSeparationLimit) {
+		// A long stretch without signal level change occurred. This could
+		// be the gap between two transmission.
+		if (diff(duration, RCSwitch->timings[0]) < 200) {
+			// This long signal is close in length to the long signal which
+			// started the previously recorded timings; this suggests that
+			// it may indeed by a a gap between two transmissions (we assume
+			// here that a sender will send the signal multiple times,
+			// with roughly the same gap between them).
+			repeatCount++;
+			if(repeatCount == 2) 
+				if(receiveProtocol(RCSwitch, changeCount)) repeatCount = 0;		
+		}
+		changeCount = 0;
+	}
+	// detect overflow
+	if (changeCount >= RCSWITCH_MAX_CHANGES) {
+		changeCount = 0;
+		repeatCount = 0;
+	}
+
+	RCSwitch->timings[changeCount++] = duration;
+	lastTime = time;
+}

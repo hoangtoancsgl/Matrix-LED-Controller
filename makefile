@@ -12,6 +12,7 @@ SRC = main.c
 SRC += myDelay.c
 SRC += uart0.c
 SRC += gpio.c
+SRC += RCSwitch.c
 
 OBJS = $(patsubst %.c,obj/%.rel,$(SRC))
 

@@ -1,0 +1,892 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ISO C Compiler 
+                                      3 ; Version 4.2.9 #13731 (Linux)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module RCSwitch
+                                      6 	.optsdcc -mmcs51 --model-small
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _diff_PARM_2
+                                     12 	.globl _receiveProtocol_PARM_2
+                                     13 	.globl _initSwitch
+                                     14 	.globl _available
+                                     15 	.globl _resetAvailable
+                                     16 	.globl _getReceivedValue
+                                     17 	.globl _diff
+                                     18 	.globl _receiveProtocol
+                                     19 ;--------------------------------------------------------
+                                     20 ; special function registers
+                                     21 ;--------------------------------------------------------
+                                     22 	.area RSEG    (ABS,DATA)
+      000000                         23 	.org 0x0000
+                                     24 ;--------------------------------------------------------
+                                     25 ; special function bits
+                                     26 ;--------------------------------------------------------
+                                     27 	.area RSEG    (ABS,DATA)
+      000000                         28 	.org 0x0000
+                                     29 ;--------------------------------------------------------
+                                     30 ; overlayable register banks
+                                     31 ;--------------------------------------------------------
+                                     32 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                         33 	.ds 8
+                                     34 ;--------------------------------------------------------
+                                     35 ; internal ram data
+                                     36 ;--------------------------------------------------------
+                                     37 	.area DSEG    (DATA)
+      000000                         38 _receiveProtocol_PARM_2:
+      000000                         39 	.ds 2
+      000002                         40 _receiveProtocol_RCSwitch_65536_55:
+      000002                         41 	.ds 3
+      000005                         42 _receiveProtocol_code_65536_56:
+      000005                         43 	.ds 4
+      000009                         44 _receiveProtocol_delay_65536_56:
+      000009                         45 	.ds 2
+      00000B                         46 _receiveProtocol_delayTolerance_65536_56:
+      00000B                         47 	.ds 2
+      00000D                         48 _receiveProtocol_sloc0_1_0:
+      00000D                         49 	.ds 1
+      00000E                         50 _receiveProtocol_sloc1_1_0:
+      00000E                         51 	.ds 3
+      000011                         52 _receiveProtocol_sloc2_1_0:
+      000011                         53 	.ds 3
+      000014                         54 _receiveProtocol_sloc3_1_0:
+      000014                         55 	.ds 2
+                                     56 ;--------------------------------------------------------
+                                     57 ; overlayable items in internal ram
+                                     58 ;--------------------------------------------------------
+                                     59 	.area	OSEG    (OVR,DATA)
+                                     60 	.area	OSEG    (OVR,DATA)
+                                     61 	.area	OSEG    (OVR,DATA)
+                                     62 	.area	OSEG    (OVR,DATA)
+                                     63 	.area	OSEG    (OVR,DATA)
+      000000                         64 _diff_PARM_2:
+      000000                         65 	.ds 2
+                                     66 ;--------------------------------------------------------
+                                     67 ; indirectly addressable internal ram data
+                                     68 ;--------------------------------------------------------
+                                     69 	.area ISEG    (DATA)
+                                     70 ;--------------------------------------------------------
+                                     71 ; absolute internal ram data
+                                     72 ;--------------------------------------------------------
+                                     73 	.area IABS    (ABS,DATA)
+                                     74 	.area IABS    (ABS,DATA)
+                                     75 ;--------------------------------------------------------
+                                     76 ; bit data
+                                     77 ;--------------------------------------------------------
+                                     78 	.area BSEG    (BIT)
+      000000                         79 _available_sloc0_1_0:
+      000000                         80 	.ds 1
+                                     81 ;--------------------------------------------------------
+                                     82 ; paged external ram data
+                                     83 ;--------------------------------------------------------
+                                     84 	.area PSEG    (PAG,XDATA)
+                                     85 ;--------------------------------------------------------
+                                     86 ; uninitialized external ram data
+                                     87 ;--------------------------------------------------------
+                                     88 	.area XSEG    (XDATA)
+                                     89 ;--------------------------------------------------------
+                                     90 ; absolute external ram data
+                                     91 ;--------------------------------------------------------
+                                     92 	.area XABS    (ABS,XDATA)
+                                     93 ;--------------------------------------------------------
+                                     94 ; initialized external ram data
+                                     95 ;--------------------------------------------------------
+                                     96 	.area XISEG   (XDATA)
+                                     97 	.area HOME    (CODE)
+                                     98 	.area GSINIT0 (CODE)
+                                     99 	.area GSINIT1 (CODE)
+                                    100 	.area GSINIT2 (CODE)
+                                    101 	.area GSINIT3 (CODE)
+                                    102 	.area GSINIT4 (CODE)
+                                    103 	.area GSINIT5 (CODE)
+                                    104 	.area GSINIT  (CODE)
+                                    105 	.area GSFINAL (CODE)
+                                    106 	.area CSEG    (CODE)
+                                    107 ;--------------------------------------------------------
+                                    108 ; global & static initialisations
+                                    109 ;--------------------------------------------------------
+                                    110 	.area HOME    (CODE)
+                                    111 	.area GSINIT  (CODE)
+                                    112 	.area GSFINAL (CODE)
+                                    113 	.area GSINIT  (CODE)
+                                    114 ;--------------------------------------------------------
+                                    115 ; Home
+                                    116 ;--------------------------------------------------------
+                                    117 	.area HOME    (CODE)
+                                    118 	.area HOME    (CODE)
+                                    119 ;--------------------------------------------------------
+                                    120 ; code
+                                    121 ;--------------------------------------------------------
+                                    122 	.area CSEG    (CODE)
+                                    123 ;------------------------------------------------------------
+                                    124 ;Allocation info for local variables in function 'initSwitch'
+                                    125 ;------------------------------------------------------------
+                                    126 ;RCSwitch                  Allocated to registers r5 r6 r7 
+                                    127 ;------------------------------------------------------------
+                                    128 ;	RCSwitch.c:14: void initSwitch(RCSWITCH_t * RCSwitch) {
+                                    129 ;	-----------------------------------------
+                                    130 ;	 function initSwitch
+                                    131 ;	-----------------------------------------
+      000000                        132 _initSwitch:
+                           000007   133 	ar7 = 0x07
+                           000006   134 	ar6 = 0x06
+                           000005   135 	ar5 = 0x05
+                           000004   136 	ar4 = 0x04
+                           000003   137 	ar3 = 0x03
+                           000002   138 	ar2 = 0x02
+                           000001   139 	ar1 = 0x01
+                           000000   140 	ar0 = 0x00
+                                    141 ;	RCSwitch.c:15: RCSwitch->nReceivedValue = 0;
+      000000 AD 82            [24]  142 	mov	r5,dpl
+      000002 AE 83            [24]  143 	mov	r6,dph
+      000004 AF F0            [24]  144 	mov	r7,b
+      000006 E4               [12]  145 	clr	a
+      000007 12r00r00         [24]  146 	lcall	__gptrput
+      00000A A3               [24]  147 	inc	dptr
+      00000B 12r00r00         [24]  148 	lcall	__gptrput
+      00000E A3               [24]  149 	inc	dptr
+      00000F 12r00r00         [24]  150 	lcall	__gptrput
+      000012 A3               [24]  151 	inc	dptr
+      000013 12r00r00         [24]  152 	lcall	__gptrput
+                                    153 ;	RCSwitch.c:16: RCSwitch->nReceivedBitlength = 0;
+      000016 74 04            [12]  154 	mov	a,#0x04
+      000018 2D               [12]  155 	add	a,r5
+      000019 FA               [12]  156 	mov	r2,a
+      00001A E4               [12]  157 	clr	a
+      00001B 3E               [12]  158 	addc	a,r6
+      00001C FB               [12]  159 	mov	r3,a
+      00001D 8F 04            [24]  160 	mov	ar4,r7
+      00001F 8A 82            [24]  161 	mov	dpl,r2
+      000021 8B 83            [24]  162 	mov	dph,r3
+      000023 8C F0            [24]  163 	mov	b,r4
+      000025 E4               [12]  164 	clr	a
+      000026 12r00r00         [24]  165 	lcall	__gptrput
+      000029 A3               [24]  166 	inc	dptr
+      00002A 12r00r00         [24]  167 	lcall	__gptrput
+                                    168 ;	RCSwitch.c:17: RCSwitch->nReceivedDelay = 0;
+      00002D 74 06            [12]  169 	mov	a,#0x06
+      00002F 2D               [12]  170 	add	a,r5
+      000030 FA               [12]  171 	mov	r2,a
+      000031 E4               [12]  172 	clr	a
+      000032 3E               [12]  173 	addc	a,r6
+      000033 FB               [12]  174 	mov	r3,a
+      000034 8F 04            [24]  175 	mov	ar4,r7
+      000036 8A 82            [24]  176 	mov	dpl,r2
+      000038 8B 83            [24]  177 	mov	dph,r3
+      00003A 8C F0            [24]  178 	mov	b,r4
+      00003C E4               [12]  179 	clr	a
+      00003D 12r00r00         [24]  180 	lcall	__gptrput
+      000040 A3               [24]  181 	inc	dptr
+      000041 12r00r00         [24]  182 	lcall	__gptrput
+                                    183 ;	RCSwitch.c:18: RCSwitch->nReceivedProtocol = 0;
+      000044 74 08            [12]  184 	mov	a,#0x08
+      000046 2D               [12]  185 	add	a,r5
+      000047 FA               [12]  186 	mov	r2,a
+      000048 E4               [12]  187 	clr	a
+      000049 3E               [12]  188 	addc	a,r6
+      00004A FB               [12]  189 	mov	r3,a
+      00004B 8F 04            [24]  190 	mov	ar4,r7
+      00004D 8A 82            [24]  191 	mov	dpl,r2
+      00004F 8B 83            [24]  192 	mov	dph,r3
+      000051 8C F0            [24]  193 	mov	b,r4
+      000053 E4               [12]  194 	clr	a
+      000054 12r00r00         [24]  195 	lcall	__gptrput
+      000057 A3               [24]  196 	inc	dptr
+      000058 12r00r00         [24]  197 	lcall	__gptrput
+                                    198 ;	RCSwitch.c:19: RCSwitch->nReceiveTolerance = 60;
+      00005B 74 0A            [12]  199 	mov	a,#0x0a
+      00005D 2D               [12]  200 	add	a,r5
+      00005E FA               [12]  201 	mov	r2,a
+      00005F E4               [12]  202 	clr	a
+      000060 3E               [12]  203 	addc	a,r6
+      000061 FB               [12]  204 	mov	r3,a
+      000062 8F 04            [24]  205 	mov	ar4,r7
+      000064 8A 82            [24]  206 	mov	dpl,r2
+      000066 8B 83            [24]  207 	mov	dph,r3
+      000068 8C F0            [24]  208 	mov	b,r4
+      00006A 74 3C            [12]  209 	mov	a,#0x3c
+      00006C 12r00r00         [24]  210 	lcall	__gptrput
+      00006F A3               [24]  211 	inc	dptr
+      000070 E4               [12]  212 	clr	a
+      000071 12r00r00         [24]  213 	lcall	__gptrput
+                                    214 ;	RCSwitch.c:20: RCSwitch->nSeparationLimit = 4300;
+      000074 74 0C            [12]  215 	mov	a,#0x0c
+      000076 2D               [12]  216 	add	a,r5
+      000077 FA               [12]  217 	mov	r2,a
+      000078 E4               [12]  218 	clr	a
+      000079 3E               [12]  219 	addc	a,r6
+      00007A FB               [12]  220 	mov	r3,a
+      00007B 8F 04            [24]  221 	mov	ar4,r7
+      00007D 8A 82            [24]  222 	mov	dpl,r2
+      00007F 8B 83            [24]  223 	mov	dph,r3
+      000081 8C F0            [24]  224 	mov	b,r4
+      000083 74 CC            [12]  225 	mov	a,#0xcc
+      000085 12r00r00         [24]  226 	lcall	__gptrput
+      000088 A3               [24]  227 	inc	dptr
+      000089 74 10            [12]  228 	mov	a,#0x10
+      00008B 12r00r00         [24]  229 	lcall	__gptrput
+                                    230 ;	RCSwitch.c:22: RCSwitch->nReceiverInterrupt = -1;
+      00008E 74 94            [12]  231 	mov	a,#0x94
+      000090 2D               [12]  232 	add	a,r5
+      000091 FA               [12]  233 	mov	r2,a
+      000092 E4               [12]  234 	clr	a
+      000093 3E               [12]  235 	addc	a,r6
+      000094 FB               [12]  236 	mov	r3,a
+      000095 8F 04            [24]  237 	mov	ar4,r7
+      000097 8A 82            [24]  238 	mov	dpl,r2
+      000099 8B 83            [24]  239 	mov	dph,r3
+      00009B 8C F0            [24]  240 	mov	b,r4
+      00009D 74 FF            [12]  241 	mov	a,#0xff
+      00009F 12r00r00         [24]  242 	lcall	__gptrput
+      0000A2 A3               [24]  243 	inc	dptr
+      0000A3 12r00r00         [24]  244 	lcall	__gptrput
+                                    245 ;	RCSwitch.c:23: RCSwitch->nReceivedValue = 0;
+      0000A6 8D 82            [24]  246 	mov	dpl,r5
+      0000A8 8E 83            [24]  247 	mov	dph,r6
+      0000AA 8F F0            [24]  248 	mov	b,r7
+      0000AC E4               [12]  249 	clr	a
+      0000AD 12r00r00         [24]  250 	lcall	__gptrput
+      0000B0 A3               [24]  251 	inc	dptr
+      0000B1 12r00r00         [24]  252 	lcall	__gptrput
+      0000B4 A3               [24]  253 	inc	dptr
+      0000B5 12r00r00         [24]  254 	lcall	__gptrput
+      0000B8 A3               [24]  255 	inc	dptr
+                                    256 ;	RCSwitch.c:24: }
+      0000B9 02r00r00         [24]  257 	ljmp	__gptrput
+                                    258 ;------------------------------------------------------------
+                                    259 ;Allocation info for local variables in function 'available'
+                                    260 ;------------------------------------------------------------
+                                    261 ;RCSwitch                  Allocated to registers r5 r6 r7 
+                                    262 ;------------------------------------------------------------
+                                    263 ;	RCSwitch.c:27: bool available(RCSWITCH_t * RCSwitch) {
+                                    264 ;	-----------------------------------------
+                                    265 ;	 function available
+                                    266 ;	-----------------------------------------
+      0000BC                        267 _available:
+                                    268 ;	RCSwitch.c:28: return RCSwitch->nReceivedValue != 0;
+      0000BC 12r00r00         [24]  269 	lcall	__gptrget
+      0000BF FD               [12]  270 	mov	r5,a
+      0000C0 A3               [24]  271 	inc	dptr
+      0000C1 12r00r00         [24]  272 	lcall	__gptrget
+      0000C4 FE               [12]  273 	mov	r6,a
+      0000C5 A3               [24]  274 	inc	dptr
+      0000C6 12r00r00         [24]  275 	lcall	__gptrget
+      0000C9 FF               [12]  276 	mov	r7,a
+      0000CA A3               [24]  277 	inc	dptr
+      0000CB 12r00r00         [24]  278 	lcall	__gptrget
+      0000CE FC               [12]  279 	mov	r4,a
+      0000CF ED               [12]  280 	mov	a,r5
+      0000D0 4E               [12]  281 	orl	a,r6
+      0000D1 4F               [12]  282 	orl	a,r7
+      0000D2 4C               [12]  283 	orl	a,r4
+      0000D3 B4 01 00         [24]  284 	cjne	a,#0x01,00103$
+      0000D6                        285 00103$:
+      0000D6 92*00            [24]  286 	mov  _available_sloc0_1_0,c
+      0000D8 B3               [12]  287 	cpl	c
+      0000D9 E4               [12]  288 	clr	a
+      0000DA 33               [12]  289 	rlc	a
+      0000DB F5 82            [12]  290 	mov	dpl,a
+                                    291 ;	RCSwitch.c:29: }
+      0000DD 22               [24]  292 	ret
+                                    293 ;------------------------------------------------------------
+                                    294 ;Allocation info for local variables in function 'resetAvailable'
+                                    295 ;------------------------------------------------------------
+                                    296 ;RCSwitch                  Allocated to registers r5 r6 r7 
+                                    297 ;------------------------------------------------------------
+                                    298 ;	RCSwitch.c:31: void resetAvailable(RCSWITCH_t * RCSwitch) {
+                                    299 ;	-----------------------------------------
+                                    300 ;	 function resetAvailable
+                                    301 ;	-----------------------------------------
+      0000DE                        302 _resetAvailable:
+                                    303 ;	RCSwitch.c:32: RCSwitch->nReceivedValue = 0;
+      0000DE E4               [12]  304 	clr	a
+      0000DF 12r00r00         [24]  305 	lcall	__gptrput
+      0000E2 A3               [24]  306 	inc	dptr
+      0000E3 12r00r00         [24]  307 	lcall	__gptrput
+      0000E6 A3               [24]  308 	inc	dptr
+      0000E7 12r00r00         [24]  309 	lcall	__gptrput
+      0000EA A3               [24]  310 	inc	dptr
+                                    311 ;	RCSwitch.c:33: }
+      0000EB 02r00r00         [24]  312 	ljmp	__gptrput
+                                    313 ;------------------------------------------------------------
+                                    314 ;Allocation info for local variables in function 'getReceivedValue'
+                                    315 ;------------------------------------------------------------
+                                    316 ;RCSwitch                  Allocated to registers r5 r6 r7 
+                                    317 ;------------------------------------------------------------
+                                    318 ;	RCSwitch.c:35: unsigned long getReceivedValue(RCSWITCH_t * RCSwitch) {
+                                    319 ;	-----------------------------------------
+                                    320 ;	 function getReceivedValue
+                                    321 ;	-----------------------------------------
+      0000EE                        322 _getReceivedValue:
+                                    323 ;	RCSwitch.c:36: return RCSwitch->nReceivedValue;
+      0000EE 12r00r00         [24]  324 	lcall	__gptrget
+      0000F1 FD               [12]  325 	mov	r5,a
+      0000F2 A3               [24]  326 	inc	dptr
+      0000F3 12r00r00         [24]  327 	lcall	__gptrget
+      0000F6 FE               [12]  328 	mov	r6,a
+      0000F7 A3               [24]  329 	inc	dptr
+      0000F8 12r00r00         [24]  330 	lcall	__gptrget
+      0000FB FF               [12]  331 	mov	r7,a
+      0000FC A3               [24]  332 	inc	dptr
+      0000FD 12r00r00         [24]  333 	lcall	__gptrget
+      000100 8D 82            [24]  334 	mov	dpl,r5
+      000102 8E 83            [24]  335 	mov	dph,r6
+      000104 8F F0            [24]  336 	mov	b,r7
+                                    337 ;	RCSwitch.c:37: }
+      000106 22               [24]  338 	ret
+                                    339 ;------------------------------------------------------------
+                                    340 ;Allocation info for local variables in function 'diff'
+                                    341 ;------------------------------------------------------------
+                                    342 ;B                         Allocated with name '_diff_PARM_2'
+                                    343 ;A                         Allocated to registers r6 r7 
+                                    344 ;------------------------------------------------------------
+                                    345 ;	RCSwitch.c:41: unsigned int diff(int A, int B) {
+                                    346 ;	-----------------------------------------
+                                    347 ;	 function diff
+                                    348 ;	-----------------------------------------
+      000107                        349 _diff:
+      000107 AE 82            [24]  350 	mov	r6,dpl
+      000109 AF 83            [24]  351 	mov	r7,dph
+                                    352 ;	RCSwitch.c:42: return ((A - B)>0) ? A-B : B-A;
+      00010B EE               [12]  353 	mov	a,r6
+      00010C C3               [12]  354 	clr	c
+      00010D 95*00            [12]  355 	subb	a,_diff_PARM_2
+      00010F FC               [12]  356 	mov	r4,a
+      000110 EF               [12]  357 	mov	a,r7
+      000111 95*01            [12]  358 	subb	a,(_diff_PARM_2 + 1)
+      000113 FD               [12]  359 	mov	r5,a
+      000114 C3               [12]  360 	clr	c
+      000115 E4               [12]  361 	clr	a
+      000116 9C               [12]  362 	subb	a,r4
+      000117 74 80            [12]  363 	mov	a,#(0x00 ^ 0x80)
+      000119 8D F0            [24]  364 	mov	b,r5
+      00011B 63 F0 80         [24]  365 	xrl	b,#0x80
+      00011E 95 F0            [12]  366 	subb	a,b
+      000120 50 0B            [24]  367 	jnc	00103$
+      000122 EE               [12]  368 	mov	a,r6
+      000123 C3               [12]  369 	clr	c
+      000124 95*00            [12]  370 	subb	a,_diff_PARM_2
+      000126 FC               [12]  371 	mov	r4,a
+      000127 EF               [12]  372 	mov	a,r7
+      000128 95*01            [12]  373 	subb	a,(_diff_PARM_2 + 1)
+      00012A FD               [12]  374 	mov	r5,a
+      00012B 80 09            [24]  375 	sjmp	00104$
+      00012D                        376 00103$:
+      00012D E5*00            [12]  377 	mov	a,_diff_PARM_2
+      00012F C3               [12]  378 	clr	c
+      000130 9E               [12]  379 	subb	a,r6
+      000131 FC               [12]  380 	mov	r4,a
+      000132 E5*01            [12]  381 	mov	a,(_diff_PARM_2 + 1)
+      000134 9F               [12]  382 	subb	a,r7
+      000135 FD               [12]  383 	mov	r5,a
+      000136                        384 00104$:
+      000136 8C 82            [24]  385 	mov	dpl,r4
+      000138 8D 83            [24]  386 	mov	dph,r5
+                                    387 ;	RCSwitch.c:43: }
+      00013A 22               [24]  388 	ret
+                                    389 ;------------------------------------------------------------
+                                    390 ;Allocation info for local variables in function 'receiveProtocol'
+                                    391 ;------------------------------------------------------------
+                                    392 ;changeCount               Allocated with name '_receiveProtocol_PARM_2'
+                                    393 ;RCSwitch                  Allocated with name '_receiveProtocol_RCSwitch_65536_55'
+                                    394 ;code                      Allocated with name '_receiveProtocol_code_65536_56'
+                                    395 ;syncLengthInPulses        Allocated to registers 
+                                    396 ;delay                     Allocated with name '_receiveProtocol_delay_65536_56'
+                                    397 ;delayTolerance            Allocated with name '_receiveProtocol_delayTolerance_65536_56'
+                                    398 ;i                         Allocated to registers r3 
+                                    399 ;sloc0                     Allocated with name '_receiveProtocol_sloc0_1_0'
+                                    400 ;sloc1                     Allocated with name '_receiveProtocol_sloc1_1_0'
+                                    401 ;sloc2                     Allocated with name '_receiveProtocol_sloc2_1_0'
+                                    402 ;sloc3                     Allocated with name '_receiveProtocol_sloc3_1_0'
+                                    403 ;------------------------------------------------------------
+                                    404 ;	RCSwitch.c:46: bool receiveProtocol(RCSWITCH_t * RCSwitch, unsigned int changeCount) {
+                                    405 ;	-----------------------------------------
+                                    406 ;	 function receiveProtocol
+                                    407 ;	-----------------------------------------
+      00013B                        408 _receiveProtocol:
+      00013B 85 82*02         [24]  409 	mov	_receiveProtocol_RCSwitch_65536_55,dpl
+      00013E 85 83*03         [24]  410 	mov	(_receiveProtocol_RCSwitch_65536_55 + 1),dph
+      000141 85 F0*04         [24]  411 	mov	(_receiveProtocol_RCSwitch_65536_55 + 2),b
+                                    412 ;	RCSwitch.c:48: unsigned long code = 0;
+      000144 E4               [12]  413 	clr	a
+      000145 F5*05            [12]  414 	mov	_receiveProtocol_code_65536_56,a
+      000147 F5*06            [12]  415 	mov	(_receiveProtocol_code_65536_56 + 1),a
+      000149 F5*07            [12]  416 	mov	(_receiveProtocol_code_65536_56 + 2),a
+      00014B F5*08            [12]  417 	mov	(_receiveProtocol_code_65536_56 + 3),a
+                                    418 ;	RCSwitch.c:50: const unsigned int syncLengthInPulses =  ((pro.syncFactor.low) > (pro.syncFactor.high)) ? (pro.syncFactor.low) : (pro.syncFactor.high);
+      00014D 90r00r03         [24]  419 	mov	dptr,#(_pro + 0x0003)
+                                    420 ;	genFromRTrack removed	clr	a
+      000150 93               [24]  421 	movc	a,@a+dptr
+      000151 F8               [12]  422 	mov	r0,a
+      000152 90r00r02         [24]  423 	mov	dptr,#(_pro + 0x0002)
+      000155 E4               [12]  424 	clr	a
+      000156 93               [24]  425 	movc	a,@a+dptr
+      000157 F5*0D            [12]  426 	mov	_receiveProtocol_sloc0_1_0,a
+      000159 C3               [12]  427 	clr	c
+      00015A 98               [12]  428 	subb	a,r0
+      00015B 50 02            [24]  429 	jnc	00117$
+      00015D 80 02            [24]  430 	sjmp	00118$
+      00015F                        431 00117$:
+      00015F A8*0D            [24]  432 	mov	r0,_receiveProtocol_sloc0_1_0
+      000161                        433 00118$:
+      000161 88*00            [24]  434 	mov	__divuint_PARM_2,r0
+      000163 75*01 00         [24]  435 	mov	(__divuint_PARM_2 + 1),#0x00
+                                    436 ;	RCSwitch.c:51: const unsigned int delay = RCSwitch->timings[0] / syncLengthInPulses;
+      000166 74 0E            [12]  437 	mov	a,#0x0e
+      000168 25*02            [12]  438 	add	a,_receiveProtocol_RCSwitch_65536_55
+      00016A F8               [12]  439 	mov	r0,a
+      00016B E4               [12]  440 	clr	a
+      00016C 35*03            [12]  441 	addc	a,(_receiveProtocol_RCSwitch_65536_55 + 1)
+      00016E FE               [12]  442 	mov	r6,a
+      00016F AF*04            [24]  443 	mov	r7,(_receiveProtocol_RCSwitch_65536_55 + 2)
+      000171 88 82            [24]  444 	mov	dpl,r0
+      000173 8E 83            [24]  445 	mov	dph,r6
+      000175 8F F0            [24]  446 	mov	b,r7
+      000177 12r00r00         [24]  447 	lcall	__gptrget
+      00017A F8               [12]  448 	mov	r0,a
+      00017B A3               [24]  449 	inc	dptr
+      00017C 12r00r00         [24]  450 	lcall	__gptrget
+      00017F FE               [12]  451 	mov	r6,a
+      000180 88 82            [24]  452 	mov	dpl,r0
+      000182 8E 83            [24]  453 	mov	dph,r6
+      000184 12r00r00         [24]  454 	lcall	__divuint
+      000187 85 82*09         [24]  455 	mov	_receiveProtocol_delay_65536_56,dpl
+      00018A 85 83*0A         [24]  456 	mov	(_receiveProtocol_delay_65536_56 + 1),dph
+                                    457 ;	RCSwitch.c:52: const unsigned int delayTolerance = delay * RCSwitch->nReceiveTolerance / 100;
+      00018D 74 0A            [12]  458 	mov	a,#0x0a
+      00018F 25*02            [12]  459 	add	a,_receiveProtocol_RCSwitch_65536_55
+      000191 F8               [12]  460 	mov	r0,a
+      000192 E4               [12]  461 	clr	a
+      000193 35*03            [12]  462 	addc	a,(_receiveProtocol_RCSwitch_65536_55 + 1)
+      000195 FC               [12]  463 	mov	r4,a
+      000196 AD*04            [24]  464 	mov	r5,(_receiveProtocol_RCSwitch_65536_55 + 2)
+      000198 88 82            [24]  465 	mov	dpl,r0
+      00019A 8C 83            [24]  466 	mov	dph,r4
+      00019C 8D F0            [24]  467 	mov	b,r5
+      00019E 12r00r00         [24]  468 	lcall	__gptrget
+      0001A1 F8               [12]  469 	mov	r0,a
+      0001A2 A3               [24]  470 	inc	dptr
+      0001A3 12r00r00         [24]  471 	lcall	__gptrget
+      0001A6 FC               [12]  472 	mov	r4,a
+      0001A7 88*00            [24]  473 	mov	__mulint_PARM_2,r0
+      0001A9 8C*01            [24]  474 	mov	(__mulint_PARM_2 + 1),r4
+      0001AB 85*09 82         [24]  475 	mov	dpl,_receiveProtocol_delay_65536_56
+      0001AE 85*0A 83         [24]  476 	mov	dph,(_receiveProtocol_delay_65536_56 + 1)
+      0001B1 12r00r00         [24]  477 	lcall	__mulint
+      0001B4 75*00 64         [24]  478 	mov	__divuint_PARM_2,#0x64
+      0001B7 75*01 00         [24]  479 	mov	(__divuint_PARM_2 + 1),#0x00
+      0001BA 12r00r00         [24]  480 	lcall	__divuint
+      0001BD 85 82*0B         [24]  481 	mov	_receiveProtocol_delayTolerance_65536_56,dpl
+      0001C0 85 83*0C         [24]  482 	mov	(_receiveProtocol_delayTolerance_65536_56 + 1),dph
+                                    483 ;	RCSwitch.c:72: for (uint8_t i = 1; i < changeCount - 1; i += 2) {
+      0001C3 7B 01            [12]  484 	mov	r3,#0x01
+      0001C5 74 0E            [12]  485 	mov	a,#0x0e
+      0001C7 25*02            [12]  486 	add	a,_receiveProtocol_RCSwitch_65536_55
+      0001C9 F8               [12]  487 	mov	r0,a
+      0001CA E4               [12]  488 	clr	a
+      0001CB 35*03            [12]  489 	addc	a,(_receiveProtocol_RCSwitch_65536_55 + 1)
+      0001CD F9               [12]  490 	mov	r1,a
+      0001CE AA*04            [24]  491 	mov	r2,(_receiveProtocol_RCSwitch_65536_55 + 2)
+      0001D0 88*0E            [24]  492 	mov	_receiveProtocol_sloc1_1_0,r0
+      0001D2 89*0F            [24]  493 	mov	(_receiveProtocol_sloc1_1_0 + 1),r1
+      0001D4 8A*10            [24]  494 	mov	(_receiveProtocol_sloc1_1_0 + 2),r2
+      0001D6 88*11            [24]  495 	mov	_receiveProtocol_sloc2_1_0,r0
+      0001D8 89*12            [24]  496 	mov	(_receiveProtocol_sloc2_1_0 + 1),r1
+      0001DA 8A*13            [24]  497 	mov	(_receiveProtocol_sloc2_1_0 + 2),r2
+      0001DC E5*00            [12]  498 	mov	a,_receiveProtocol_PARM_2
+      0001DE 24 FF            [12]  499 	add	a,#0xff
+      0001E0 F5*14            [12]  500 	mov	_receiveProtocol_sloc3_1_0,a
+      0001E2 E5*01            [12]  501 	mov	a,(_receiveProtocol_PARM_2 + 1)
+      0001E4 34 FF            [12]  502 	addc	a,#0xff
+      0001E6 F5*15            [12]  503 	mov	(_receiveProtocol_sloc3_1_0 + 1),a
+      0001E8                        504 00113$:
+      0001E8 8B 04            [24]  505 	mov	ar4,r3
+      0001EA 7D 00            [12]  506 	mov	r5,#0x00
+      0001EC C3               [12]  507 	clr	c
+      0001ED EC               [12]  508 	mov	a,r4
+      0001EE 95*14            [12]  509 	subb	a,_receiveProtocol_sloc3_1_0
+      0001F0 ED               [12]  510 	mov	a,r5
+      0001F1 95*15            [12]  511 	subb	a,(_receiveProtocol_sloc3_1_0 + 1)
+      0001F3 40 03            [24]  512 	jc	00148$
+      0001F5 02r04r00         [24]  513 	ljmp	00109$
+      0001F8                        514 00148$:
+                                    515 ;	RCSwitch.c:73: code <<= 1;
+      0001F8 E5*05            [12]  516 	mov	a,_receiveProtocol_code_65536_56
+      0001FA 25*05            [12]  517 	add	a,_receiveProtocol_code_65536_56
+      0001FC F5*05            [12]  518 	mov	_receiveProtocol_code_65536_56,a
+      0001FE E5*06            [12]  519 	mov	a,(_receiveProtocol_code_65536_56 + 1)
+      000200 33               [12]  520 	rlc	a
+      000201 F5*06            [12]  521 	mov	(_receiveProtocol_code_65536_56 + 1),a
+      000203 E5*07            [12]  522 	mov	a,(_receiveProtocol_code_65536_56 + 2)
+      000205 33               [12]  523 	rlc	a
+      000206 F5*07            [12]  524 	mov	(_receiveProtocol_code_65536_56 + 2),a
+      000208 E5*08            [12]  525 	mov	a,(_receiveProtocol_code_65536_56 + 3)
+      00020A 33               [12]  526 	rlc	a
+      00020B F5*08            [12]  527 	mov	(_receiveProtocol_code_65536_56 + 3),a
+                                    528 ;	RCSwitch.c:74: if (diff(RCSwitch->timings[i], delay * pro.zero.high) < delayTolerance &&
+      00020D EB               [12]  529 	mov	a,r3
+      00020E 2B               [12]  530 	add	a,r3
+      00020F 28               [12]  531 	add	a,r0
+      000210 FC               [12]  532 	mov	r4,a
+      000211 E4               [12]  533 	clr	a
+      000212 39               [12]  534 	addc	a,r1
+      000213 FD               [12]  535 	mov	r5,a
+      000214 8A 07            [24]  536 	mov	ar7,r2
+      000216 8C 82            [24]  537 	mov	dpl,r4
+      000218 8D 83            [24]  538 	mov	dph,r5
+      00021A 8F F0            [24]  539 	mov	b,r7
+      00021C 12r00r00         [24]  540 	lcall	__gptrget
+      00021F FC               [12]  541 	mov	r4,a
+      000220 A3               [24]  542 	inc	dptr
+      000221 12r00r00         [24]  543 	lcall	__gptrget
+      000224 FD               [12]  544 	mov	r5,a
+      000225 90r00r04         [24]  545 	mov	dptr,#(_pro + 0x0004)
+      000228 E4               [12]  546 	clr	a
+      000229 93               [24]  547 	movc	a,@a+dptr
+      00022A FF               [12]  548 	mov	r7,a
+      00022B 8F*00            [24]  549 	mov	__mulint_PARM_2,r7
+      00022D 75*01 00         [24]  550 	mov	(__mulint_PARM_2 + 1),#0x00
+      000230 85*09 82         [24]  551 	mov	dpl,_receiveProtocol_delay_65536_56
+      000233 85*0A 83         [24]  552 	mov	dph,(_receiveProtocol_delay_65536_56 + 1)
+      000236 C0 05            [24]  553 	push	ar5
+      000238 C0 04            [24]  554 	push	ar4
+      00023A C0 03            [24]  555 	push	ar3
+      00023C C0 02            [24]  556 	push	ar2
+      00023E C0 01            [24]  557 	push	ar1
+      000240 C0 00            [24]  558 	push	ar0
+      000242 12r00r00         [24]  559 	lcall	__mulint
+      000245 85 82*00         [24]  560 	mov	_diff_PARM_2,dpl
+      000248 85 83*01         [24]  561 	mov	(_diff_PARM_2 + 1),dph
+      00024B D0 00            [24]  562 	pop	ar0
+      00024D D0 01            [24]  563 	pop	ar1
+      00024F D0 02            [24]  564 	pop	ar2
+      000251 D0 03            [24]  565 	pop	ar3
+      000253 D0 04            [24]  566 	pop	ar4
+      000255 D0 05            [24]  567 	pop	ar5
+      000257 8C 82            [24]  568 	mov	dpl,r4
+      000259 8D 83            [24]  569 	mov	dph,r5
+      00025B C0 03            [24]  570 	push	ar3
+      00025D C0 02            [24]  571 	push	ar2
+      00025F C0 01            [24]  572 	push	ar1
+      000261 C0 00            [24]  573 	push	ar0
+      000263 12r01r07         [24]  574 	lcall	_diff
+      000266 AE 82            [24]  575 	mov	r6,dpl
+      000268 AF 83            [24]  576 	mov	r7,dph
+      00026A D0 00            [24]  577 	pop	ar0
+      00026C D0 01            [24]  578 	pop	ar1
+      00026E D0 02            [24]  579 	pop	ar2
+      000270 D0 03            [24]  580 	pop	ar3
+      000272 C3               [12]  581 	clr	c
+      000273 EE               [12]  582 	mov	a,r6
+      000274 95*0B            [12]  583 	subb	a,_receiveProtocol_delayTolerance_65536_56
+      000276 EF               [12]  584 	mov	a,r7
+      000277 95*0C            [12]  585 	subb	a,(_receiveProtocol_delayTolerance_65536_56 + 1)
+      000279 40 03            [24]  586 	jc	00149$
+      00027B 02r02rFD         [24]  587 	ljmp	00106$
+      00027E                        588 00149$:
+                                    589 ;	RCSwitch.c:75: diff(RCSwitch->timings[i + 1], delay * pro.zero.low) < delayTolerance) {
+      00027E 8B 06            [24]  590 	mov	ar6,r3
+      000280 7F 00            [12]  591 	mov	r7,#0x00
+      000282 0E               [12]  592 	inc	r6
+      000283 BE 00 01         [24]  593 	cjne	r6,#0x00,00150$
+      000286 0F               [12]  594 	inc	r7
+      000287                        595 00150$:
+      000287 EE               [12]  596 	mov	a,r6
+      000288 2E               [12]  597 	add	a,r6
+      000289 FE               [12]  598 	mov	r6,a
+      00028A EF               [12]  599 	mov	a,r7
+      00028B 33               [12]  600 	rlc	a
+      00028C FF               [12]  601 	mov	r7,a
+      00028D EE               [12]  602 	mov	a,r6
+      00028E 28               [12]  603 	add	a,r0
+      00028F FE               [12]  604 	mov	r6,a
+      000290 EF               [12]  605 	mov	a,r7
+      000291 39               [12]  606 	addc	a,r1
+      000292 FF               [12]  607 	mov	r7,a
+      000293 8A 05            [24]  608 	mov	ar5,r2
+      000295 8E 82            [24]  609 	mov	dpl,r6
+      000297 8F 83            [24]  610 	mov	dph,r7
+      000299 8D F0            [24]  611 	mov	b,r5
+      00029B 12r00r00         [24]  612 	lcall	__gptrget
+      00029E FE               [12]  613 	mov	r6,a
+      00029F A3               [24]  614 	inc	dptr
+      0002A0 12r00r00         [24]  615 	lcall	__gptrget
+      0002A3 FF               [12]  616 	mov	r7,a
+      0002A4 90r00r05         [24]  617 	mov	dptr,#(_pro + 0x0005)
+      0002A7 E4               [12]  618 	clr	a
+      0002A8 93               [24]  619 	movc	a,@a+dptr
+      0002A9 FD               [12]  620 	mov	r5,a
+      0002AA 8D*00            [24]  621 	mov	__mulint_PARM_2,r5
+      0002AC 75*01 00         [24]  622 	mov	(__mulint_PARM_2 + 1),#0x00
+      0002AF 85*09 82         [24]  623 	mov	dpl,_receiveProtocol_delay_65536_56
+      0002B2 85*0A 83         [24]  624 	mov	dph,(_receiveProtocol_delay_65536_56 + 1)
+      0002B5 C0 07            [24]  625 	push	ar7
+      0002B7 C0 06            [24]  626 	push	ar6
+      0002B9 C0 03            [24]  627 	push	ar3
+      0002BB C0 02            [24]  628 	push	ar2
+      0002BD C0 01            [24]  629 	push	ar1
+      0002BF C0 00            [24]  630 	push	ar0
+      0002C1 12r00r00         [24]  631 	lcall	__mulint
+      0002C4 85 82*00         [24]  632 	mov	_diff_PARM_2,dpl
+      0002C7 85 83*01         [24]  633 	mov	(_diff_PARM_2 + 1),dph
+      0002CA D0 00            [24]  634 	pop	ar0
+      0002CC D0 01            [24]  635 	pop	ar1
+      0002CE D0 02            [24]  636 	pop	ar2
+      0002D0 D0 03            [24]  637 	pop	ar3
+      0002D2 D0 06            [24]  638 	pop	ar6
+      0002D4 D0 07            [24]  639 	pop	ar7
+      0002D6 8E 82            [24]  640 	mov	dpl,r6
+      0002D8 8F 83            [24]  641 	mov	dph,r7
+      0002DA C0 03            [24]  642 	push	ar3
+      0002DC C0 02            [24]  643 	push	ar2
+      0002DE C0 01            [24]  644 	push	ar1
+      0002E0 C0 00            [24]  645 	push	ar0
+      0002E2 12r01r07         [24]  646 	lcall	_diff
+      0002E5 AE 82            [24]  647 	mov	r6,dpl
+      0002E7 AF 83            [24]  648 	mov	r7,dph
+      0002E9 D0 00            [24]  649 	pop	ar0
+      0002EB D0 01            [24]  650 	pop	ar1
+      0002ED D0 02            [24]  651 	pop	ar2
+      0002EF D0 03            [24]  652 	pop	ar3
+      0002F1 C3               [12]  653 	clr	c
+      0002F2 EE               [12]  654 	mov	a,r6
+      0002F3 95*0B            [12]  655 	subb	a,_receiveProtocol_delayTolerance_65536_56
+      0002F5 EF               [12]  656 	mov	a,r7
+      0002F6 95*0C            [12]  657 	subb	a,(_receiveProtocol_delayTolerance_65536_56 + 1)
+      0002F8 50 03            [24]  658 	jnc	00151$
+      0002FA 02r03rF7         [24]  659 	ljmp	00114$
+      0002FD                        660 00151$:
+      0002FD                        661 00106$:
+                                    662 ;	RCSwitch.c:77: } else if (diff(RCSwitch->timings[i], delay * pro.one.high) < delayTolerance &&
+      0002FD EB               [12]  663 	mov	a,r3
+      0002FE 2B               [12]  664 	add	a,r3
+      0002FF 25*0E            [12]  665 	add	a,_receiveProtocol_sloc1_1_0
+      000301 FF               [12]  666 	mov	r7,a
+      000302 E4               [12]  667 	clr	a
+      000303 35*0F            [12]  668 	addc	a,(_receiveProtocol_sloc1_1_0 + 1)
+      000305 FE               [12]  669 	mov	r6,a
+      000306 AD*10            [24]  670 	mov	r5,(_receiveProtocol_sloc1_1_0 + 2)
+      000308 8F 82            [24]  671 	mov	dpl,r7
+      00030A 8E 83            [24]  672 	mov	dph,r6
+      00030C 8D F0            [24]  673 	mov	b,r5
+      00030E 12r00r00         [24]  674 	lcall	__gptrget
+      000311 FF               [12]  675 	mov	r7,a
+      000312 A3               [24]  676 	inc	dptr
+      000313 12r00r00         [24]  677 	lcall	__gptrget
+      000316 FE               [12]  678 	mov	r6,a
+      000317 90r00r06         [24]  679 	mov	dptr,#(_pro + 0x0006)
+      00031A E4               [12]  680 	clr	a
+      00031B 93               [24]  681 	movc	a,@a+dptr
+      00031C FD               [12]  682 	mov	r5,a
+      00031D 8D*00            [24]  683 	mov	__mulint_PARM_2,r5
+      00031F 75*01 00         [24]  684 	mov	(__mulint_PARM_2 + 1),#0x00
+      000322 85*09 82         [24]  685 	mov	dpl,_receiveProtocol_delay_65536_56
+      000325 85*0A 83         [24]  686 	mov	dph,(_receiveProtocol_delay_65536_56 + 1)
+      000328 C0 07            [24]  687 	push	ar7
+      00032A C0 06            [24]  688 	push	ar6
+      00032C C0 03            [24]  689 	push	ar3
+      00032E C0 02            [24]  690 	push	ar2
+      000330 C0 01            [24]  691 	push	ar1
+      000332 C0 00            [24]  692 	push	ar0
+      000334 12r00r00         [24]  693 	lcall	__mulint
+      000337 85 82*00         [24]  694 	mov	_diff_PARM_2,dpl
+      00033A 85 83*01         [24]  695 	mov	(_diff_PARM_2 + 1),dph
+      00033D D0 00            [24]  696 	pop	ar0
+      00033F D0 01            [24]  697 	pop	ar1
+      000341 D0 02            [24]  698 	pop	ar2
+      000343 D0 03            [24]  699 	pop	ar3
+      000345 D0 06            [24]  700 	pop	ar6
+      000347 D0 07            [24]  701 	pop	ar7
+      000349 8F 82            [24]  702 	mov	dpl,r7
+      00034B 8E 83            [24]  703 	mov	dph,r6
+      00034D C0 03            [24]  704 	push	ar3
+      00034F C0 02            [24]  705 	push	ar2
+      000351 C0 01            [24]  706 	push	ar1
+      000353 C0 00            [24]  707 	push	ar0
+      000355 12r01r07         [24]  708 	lcall	_diff
+      000358 AE 82            [24]  709 	mov	r6,dpl
+      00035A AF 83            [24]  710 	mov	r7,dph
+      00035C D0 00            [24]  711 	pop	ar0
+      00035E D0 01            [24]  712 	pop	ar1
+      000360 D0 02            [24]  713 	pop	ar2
+      000362 D0 03            [24]  714 	pop	ar3
+      000364 C3               [12]  715 	clr	c
+      000365 EE               [12]  716 	mov	a,r6
+      000366 95*0B            [12]  717 	subb	a,_receiveProtocol_delayTolerance_65536_56
+      000368 EF               [12]  718 	mov	a,r7
+      000369 95*0C            [12]  719 	subb	a,(_receiveProtocol_delayTolerance_65536_56 + 1)
+      00036B 40 03            [24]  720 	jc	00152$
+      00036D 02r03rF3         [24]  721 	ljmp	00102$
+      000370                        722 00152$:
+                                    723 ;	RCSwitch.c:78: diff(RCSwitch->timings[i + 1], delay * pro.one.low) < delayTolerance) {
+      000370 8B 06            [24]  724 	mov	ar6,r3
+      000372 7F 00            [12]  725 	mov	r7,#0x00
+      000374 0E               [12]  726 	inc	r6
+      000375 BE 00 01         [24]  727 	cjne	r6,#0x00,00153$
+      000378 0F               [12]  728 	inc	r7
+      000379                        729 00153$:
+      000379 EE               [12]  730 	mov	a,r6
+      00037A 2E               [12]  731 	add	a,r6
+      00037B FE               [12]  732 	mov	r6,a
+      00037C EF               [12]  733 	mov	a,r7
+      00037D 33               [12]  734 	rlc	a
+      00037E FF               [12]  735 	mov	r7,a
+      00037F EE               [12]  736 	mov	a,r6
+      000380 25*11            [12]  737 	add	a,_receiveProtocol_sloc2_1_0
+      000382 FE               [12]  738 	mov	r6,a
+      000383 EF               [12]  739 	mov	a,r7
+      000384 35*12            [12]  740 	addc	a,(_receiveProtocol_sloc2_1_0 + 1)
+      000386 FF               [12]  741 	mov	r7,a
+      000387 AD*13            [24]  742 	mov	r5,(_receiveProtocol_sloc2_1_0 + 2)
+      000389 8E 82            [24]  743 	mov	dpl,r6
+      00038B 8F 83            [24]  744 	mov	dph,r7
+      00038D 8D F0            [24]  745 	mov	b,r5
+      00038F 12r00r00         [24]  746 	lcall	__gptrget
+      000392 FE               [12]  747 	mov	r6,a
+      000393 A3               [24]  748 	inc	dptr
+      000394 12r00r00         [24]  749 	lcall	__gptrget
+      000397 FF               [12]  750 	mov	r7,a
+      000398 90r00r07         [24]  751 	mov	dptr,#(_pro + 0x0007)
+      00039B E4               [12]  752 	clr	a
+      00039C 93               [24]  753 	movc	a,@a+dptr
+      00039D FD               [12]  754 	mov	r5,a
+      00039E 8D*00            [24]  755 	mov	__mulint_PARM_2,r5
+      0003A0 75*01 00         [24]  756 	mov	(__mulint_PARM_2 + 1),#0x00
+      0003A3 85*09 82         [24]  757 	mov	dpl,_receiveProtocol_delay_65536_56
+      0003A6 85*0A 83         [24]  758 	mov	dph,(_receiveProtocol_delay_65536_56 + 1)
+      0003A9 C0 07            [24]  759 	push	ar7
+      0003AB C0 06            [24]  760 	push	ar6
+      0003AD C0 03            [24]  761 	push	ar3
+      0003AF C0 02            [24]  762 	push	ar2
+      0003B1 C0 01            [24]  763 	push	ar1
+      0003B3 C0 00            [24]  764 	push	ar0
+      0003B5 12r00r00         [24]  765 	lcall	__mulint
+      0003B8 85 82*00         [24]  766 	mov	_diff_PARM_2,dpl
+      0003BB 85 83*01         [24]  767 	mov	(_diff_PARM_2 + 1),dph
+      0003BE D0 00            [24]  768 	pop	ar0
+      0003C0 D0 01            [24]  769 	pop	ar1
+      0003C2 D0 02            [24]  770 	pop	ar2
+      0003C4 D0 03            [24]  771 	pop	ar3
+      0003C6 D0 06            [24]  772 	pop	ar6
+      0003C8 D0 07            [24]  773 	pop	ar7
+      0003CA 8E 82            [24]  774 	mov	dpl,r6
+      0003CC 8F 83            [24]  775 	mov	dph,r7
+      0003CE C0 03            [24]  776 	push	ar3
+      0003D0 C0 02            [24]  777 	push	ar2
+      0003D2 C0 01            [24]  778 	push	ar1
+      0003D4 C0 00            [24]  779 	push	ar0
+      0003D6 12r01r07         [24]  780 	lcall	_diff
+      0003D9 AE 82            [24]  781 	mov	r6,dpl
+      0003DB AF 83            [24]  782 	mov	r7,dph
+      0003DD D0 00            [24]  783 	pop	ar0
+      0003DF D0 01            [24]  784 	pop	ar1
+      0003E1 D0 02            [24]  785 	pop	ar2
+      0003E3 D0 03            [24]  786 	pop	ar3
+      0003E5 C3               [12]  787 	clr	c
+      0003E6 EE               [12]  788 	mov	a,r6
+      0003E7 95*0B            [12]  789 	subb	a,_receiveProtocol_delayTolerance_65536_56
+      0003E9 EF               [12]  790 	mov	a,r7
+      0003EA 95*0C            [12]  791 	subb	a,(_receiveProtocol_delayTolerance_65536_56 + 1)
+      0003EC 50 05            [24]  792 	jnc	00102$
+                                    793 ;	RCSwitch.c:80: code |= 1;
+      0003EE 43*05 01         [24]  794 	orl	_receiveProtocol_code_65536_56,#0x01
+      0003F1 80 04            [24]  795 	sjmp	00114$
+      0003F3                        796 00102$:
+                                    797 ;	RCSwitch.c:83: return false;
+      0003F3 75 82 00         [24]  798 	mov	dpl,#0x00
+      0003F6 22               [24]  799 	ret
+      0003F7                        800 00114$:
+                                    801 ;	RCSwitch.c:72: for (uint8_t i = 1; i < changeCount - 1; i += 2) {
+      0003F7 8B 07            [24]  802 	mov	ar7,r3
+      0003F9 74 02            [12]  803 	mov	a,#0x02
+      0003FB 2F               [12]  804 	add	a,r7
+      0003FC FB               [12]  805 	mov	r3,a
+      0003FD 02r01rE8         [24]  806 	ljmp	00113$
+      000400                        807 00109$:
+                                    808 ;	RCSwitch.c:87: if (changeCount > 7) {		// ignore very short transmissions: no device sends them, so this must be noise
+      000400 C3               [12]  809 	clr	c
+      000401 74 07            [12]  810 	mov	a,#0x07
+      000403 95*00            [12]  811 	subb	a,_receiveProtocol_PARM_2
+      000405 E4               [12]  812 	clr	a
+      000406 95*01            [12]  813 	subb	a,(_receiveProtocol_PARM_2 + 1)
+      000408 50 69            [24]  814 	jnc	00111$
+                                    815 ;	RCSwitch.c:88: RCSwitch->nReceivedValue = code;
+      00040A 85*02 82         [24]  816 	mov	dpl,_receiveProtocol_RCSwitch_65536_55
+      00040D 85*03 83         [24]  817 	mov	dph,(_receiveProtocol_RCSwitch_65536_55 + 1)
+      000410 85*04 F0         [24]  818 	mov	b,(_receiveProtocol_RCSwitch_65536_55 + 2)
+      000413 E5*05            [12]  819 	mov	a,_receiveProtocol_code_65536_56
+      000415 12r00r00         [24]  820 	lcall	__gptrput
+      000418 A3               [24]  821 	inc	dptr
+      000419 E5*06            [12]  822 	mov	a,(_receiveProtocol_code_65536_56 + 1)
+      00041B 12r00r00         [24]  823 	lcall	__gptrput
+      00041E A3               [24]  824 	inc	dptr
+      00041F E5*07            [12]  825 	mov	a,(_receiveProtocol_code_65536_56 + 2)
+      000421 12r00r00         [24]  826 	lcall	__gptrput
+      000424 A3               [24]  827 	inc	dptr
+      000425 E5*08            [12]  828 	mov	a,(_receiveProtocol_code_65536_56 + 3)
+      000427 12r00r00         [24]  829 	lcall	__gptrput
+                                    830 ;	RCSwitch.c:89: RCSwitch->nReceivedBitlength = (changeCount - 1) / 2;
+      00042A 74 04            [12]  831 	mov	a,#0x04
+      00042C 25*02            [12]  832 	add	a,_receiveProtocol_RCSwitch_65536_55
+      00042E FD               [12]  833 	mov	r5,a
+      00042F E4               [12]  834 	clr	a
+      000430 35*03            [12]  835 	addc	a,(_receiveProtocol_RCSwitch_65536_55 + 1)
+      000432 FE               [12]  836 	mov	r6,a
+      000433 AF*04            [24]  837 	mov	r7,(_receiveProtocol_RCSwitch_65536_55 + 2)
+      000435 E5*00            [12]  838 	mov	a,_receiveProtocol_PARM_2
+      000437 24 FF            [12]  839 	add	a,#0xff
+      000439 FB               [12]  840 	mov	r3,a
+      00043A E5*01            [12]  841 	mov	a,(_receiveProtocol_PARM_2 + 1)
+      00043C 34 FF            [12]  842 	addc	a,#0xff
+      00043E C3               [12]  843 	clr	c
+      00043F 13               [12]  844 	rrc	a
+      000440 CB               [12]  845 	xch	a,r3
+      000441 13               [12]  846 	rrc	a
+      000442 CB               [12]  847 	xch	a,r3
+      000443 FC               [12]  848 	mov	r4,a
+      000444 8D 82            [24]  849 	mov	dpl,r5
+      000446 8E 83            [24]  850 	mov	dph,r6
+      000448 8F F0            [24]  851 	mov	b,r7
+      00044A EB               [12]  852 	mov	a,r3
+      00044B 12r00r00         [24]  853 	lcall	__gptrput
+      00044E A3               [24]  854 	inc	dptr
+      00044F EC               [12]  855 	mov	a,r4
+      000450 12r00r00         [24]  856 	lcall	__gptrput
+                                    857 ;	RCSwitch.c:90: RCSwitch->nReceivedDelay = delay;
+      000453 74 06            [12]  858 	mov	a,#0x06
+      000455 25*02            [12]  859 	add	a,_receiveProtocol_RCSwitch_65536_55
+      000457 FD               [12]  860 	mov	r5,a
+      000458 E4               [12]  861 	clr	a
+      000459 35*03            [12]  862 	addc	a,(_receiveProtocol_RCSwitch_65536_55 + 1)
+      00045B FE               [12]  863 	mov	r6,a
+      00045C AF*04            [24]  864 	mov	r7,(_receiveProtocol_RCSwitch_65536_55 + 2)
+      00045E 8D 82            [24]  865 	mov	dpl,r5
+      000460 8E 83            [24]  866 	mov	dph,r6
+      000462 8F F0            [24]  867 	mov	b,r7
+      000464 E5*09            [12]  868 	mov	a,_receiveProtocol_delay_65536_56
+      000466 12r00r00         [24]  869 	lcall	__gptrput
+      000469 A3               [24]  870 	inc	dptr
+      00046A E5*0A            [12]  871 	mov	a,(_receiveProtocol_delay_65536_56 + 1)
+      00046C 12r00r00         [24]  872 	lcall	__gptrput
+                                    873 ;	RCSwitch.c:91: return true;
+      00046F 75 82 01         [24]  874 	mov	dpl,#0x01
+      000472 22               [24]  875 	ret
+      000473                        876 00111$:
+                                    877 ;	RCSwitch.c:94: return false;
+      000473 75 82 00         [24]  878 	mov	dpl,#0x00
+                                    879 ;	RCSwitch.c:95: }
+      000476 22               [24]  880 	ret
+                                    881 	.area CSEG    (CODE)
+                                    882 	.area CONST   (CODE)
+      000000                        883 _pro:
+      000000 5E 01                  884 	.byte #0x5e, #0x01	; 350
+      000002 01                     885 	.db #0x01	; 1
+      000003 1F                     886 	.db #0x1f	; 31
+      000004 01                     887 	.db #0x01	; 1
+      000005 03                     888 	.db #0x03	; 3
+      000006 03                     889 	.db #0x03	; 3
+      000007 01                     890 	.db #0x01	; 1
+                                    891 	.area XINIT   (CODE)
+                                    892 	.area CABS    (ABS,CODE)
